@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html {
+  font-family: "Montserrat", sans-serif;
+  padding: unset;
+}
+
+body {
+  padding: unset;
+}
+
+/* biome-ignore lint/suspicious/noUnknownAtRules: known tailwind rule */
+@theme {
+}
