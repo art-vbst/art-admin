@@ -12,3 +12,15 @@ body {
 /* biome-ignore lint/suspicious/noUnknownAtRules: known tailwind rule */
 @theme {
 }
+
+.breadcrumb {
+  @apply mb-4 text-sm text-gray-500;
+}
+
+.card {
+  @apply rounded-md border bg-white p-4 shadow-sm;
+}
+
+.skeleton {
+  @apply animate-pulse rounded bg-gray-200;
+}

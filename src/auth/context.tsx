@@ -56,7 +56,11 @@ export const AuthGuard = ({
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid min-h-dvh place-items-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-gray-800" />
+      </div>
+    );
   }
 
   const shouldNavigate = inverted ? !!user : !user;
