@@ -25,3 +25,12 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     return this.props.children;
   }
 }
+
+interface BoundaryProps {
+  fallback: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export const Boundary = ({ fallback, children }: BoundaryProps) => {
+  return <ErrorBoundary fallback={fallback}>{children}</ErrorBoundary>;
+};
