@@ -20,7 +20,7 @@ export class BaseEndpoint<T> {
   }
 
   get(id: number | string, params: Record<string, unknown> = {}) {
-    const endpoint = `${this.endpoint}${id}`;
+    const endpoint = `${this.endpoint}/${id}`;
     return http.get<T>(endpoint, { params });
   }
 
@@ -34,7 +34,7 @@ export class BaseEndpoint<T> {
     config: AxiosRequestConfig = {},
     patch = true,
   ) {
-    const endpoint = `${this.endpoint}${id}`;
+    const endpoint = `${this.endpoint}/${id}`;
 
     return patch
       ? http.patch<T>(endpoint, data, config)
@@ -42,7 +42,7 @@ export class BaseEndpoint<T> {
   }
 
   delete(id: number | string) {
-    const endpoint = `${this.endpoint}${id}`;
+    const endpoint = `${this.endpoint}/${id}`;
     return http.delete(endpoint);
   }
 }

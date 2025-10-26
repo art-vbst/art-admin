@@ -18,7 +18,8 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router": "^7.9.4",
-    "tailwindcss": "^4.1.15"
+    "tailwindcss": "^4.1.15",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@art-vbst/art-types": "^1.0.7",
