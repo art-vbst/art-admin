@@ -2,15 +2,25 @@ import type { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useAction } from './useAction';
 
-export const usePageData = <T>(fetcher: () => Promise<AxiosResponse<T>>) => {
+export const usePageData = <T>(
+  fetcher: () => Promise<AxiosResponse<T>>,
+  dependencies: unknown[] = [],
+) => {
   const [data, setData] = useState<T | null>(null);
 
   const { execute, loading, error } = useAction(fetcher, {
     initLoading: true,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: don't rely on memoization
-  useEffect(() => void execute().then(setData), []);
+  const refetch = async () => {
+    const result = await execute();
+    if (result) {
+      setData(result);
+    }
+  };
 
-  return { data, loading, error };
+  // biome-ignore lint/correctness/useExhaustiveDependencies: don't rely on memoization
+  useEffect(() => void execute().then(setData), dependencies);
+
+  return { data, loading, error, refetch };
 };
