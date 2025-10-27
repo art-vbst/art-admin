@@ -8,7 +8,7 @@ import { me, refresh } from './api';
 type AuthContextType = {
   loading: boolean;
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -56,7 +56,11 @@ export const AuthGuard = ({
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid min-h-dvh place-items-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-transparent" />
+      </div>
+    );
   }
 
   const shouldNavigate = inverted ? !!user : !user;
