@@ -1,10 +1,12 @@
-import { useContext, useState } from 'react';
+import { useContext, useId, useState } from 'react';
 import { login } from '~/auth/api';
 import { AuthContext } from '~/auth/context';
 import { useAction } from '~/hooks/useAction';
 
 export const Login = () => {
   const { setUser } = useContext(AuthContext);
+  const emailId = useId();
+  const passwordId = useId();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,41 +19,57 @@ export const Login = () => {
   };
 
   return (
-    <div className="mx-auto mt-8 max-w-md p-6">
-      {error && <div className="text-red-500">{error.message}</div>}
-      <h2 className="mb-4 font-bold text-2xl">Sign in</h2>
-      <form className="space-y-4">
-        <div>
-          <label htmlFor="email" className="mb-1 block">
-            Email
-          </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded border px-3 py-2"
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="mb-1 block">
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded border px-3 py-2"
-          />
-        </div>
-        <button
-          type="button"
-          className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {loading ? 'Signing in...' : 'Sign in'}
-        </button>
-      </form>
+    <div className="flex min-h-dvh items-center justify-center bg-white px-4 py-8">
+      <div className="w-full max-w-md">
+        <h2 className="mb-6 font-bold text-3xl text-gray-900">Sign in</h2>
+
+        {error && (
+          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
+            {error.message}
+          </div>
+        )}
+
+        <form className="space-y-4">
+          <div>
+            <label
+              htmlFor={emailId}
+              className="mb-1 block font-medium text-gray-900 text-sm"
+            >
+              Email
+            </label>
+            <input
+              id={emailId}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor={passwordId}
+              className="mb-1 block font-medium text-gray-900 text-sm"
+            >
+              Password
+            </label>
+            <input
+              id={passwordId}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            />
+          </div>
+          <button
+            type="button"
+            className="w-full rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -35,12 +35,12 @@ export const router = createBrowserRouter([
   {
     element: (
       <Boundary fallback={<ErrorDisplay />}>
-        <Layout />
+        <AuthProvider />
       </Boundary>
     ),
     children: [
       {
-        element: <AuthProvider />,
+        element: <Layout />,
         children: [...publicRoutes, ...privateRoutes],
       },
       { path: '*', element: <NotFound /> },
