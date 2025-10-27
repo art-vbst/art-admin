@@ -18,7 +18,7 @@ export const Dashboard = () => {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ label: 'dashboard' }]} />
 
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">Dashboard</h1>
+      <h1 className="mb-8 font-bold text-3xl text-gray-900">Dashboard</h1>
 
       {loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -68,11 +68,11 @@ const DashboardCard = ({
 }) => {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
-      <h3 className="mb-2 text-sm font-medium text-gray-600">{title}</h3>
-      <p className="mb-4 text-3xl font-bold text-gray-900">{value}</p>
+      <h3 className="mb-2 font-medium text-gray-600 text-sm">{title}</h3>
+      <p className="mb-4 font-bold text-3xl text-gray-900">{value}</p>
       <Link
         to={link}
-        className="inline-block text-sm font-medium text-gray-900 hover:text-gray-600"
+        className="inline-block font-medium text-gray-900 text-sm hover:text-gray-600"
       >
         {linkText} →
       </Link>

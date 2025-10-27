@@ -51,7 +51,7 @@ export const OrderDetail = () => {
         items={[{ label: 'orders', href: '/orders' }, { label: id }]}
       />
 
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">Order Details</h1>
+      <h1 className="mb-8 font-bold text-3xl text-gray-900">Order Details</h1>
 
       <div className="space-y-6">
         <Section title="Summary">
@@ -59,7 +59,7 @@ export const OrderDetail = () => {
           <InfoRow
             label="Status"
             value={
-              <span className="rounded bg-gray-100 px-2 py-1 text-sm font-medium">
+              <span className="rounded bg-gray-100 px-2 py-1 font-medium text-sm">
                 {order.status}
               </span>
             }
@@ -101,7 +101,7 @@ export const OrderDetail = () => {
           <InfoRow
             label="Total"
             value={
-              <span className="text-lg font-bold">
+              <span className="font-bold text-lg">
                 {formatUSD(order.paymentRequirement.totalCents)}
               </span>
             }
@@ -114,7 +114,7 @@ export const OrderDetail = () => {
 
         <Section title="Payments">
           {order.payments.length === 0 ? (
-            <p className="text-sm text-gray-600">No payments recorded</p>
+            <p className="text-gray-600 text-sm">No payments recorded</p>
           ) : (
             <div className="space-y-4">
               {order.payments.map((payment) => (
@@ -127,7 +127,7 @@ export const OrderDetail = () => {
                       {formatUSD(payment.totalCents)}
                     </span>
                     <span
-                      className={`rounded px-2 py-1 text-xs font-medium ${
+                      className={`rounded px-2 py-1 font-medium text-xs ${
                         payment.status === 'success'
                           ? 'bg-green-100 text-green-800'
                           : payment.status === 'failed'
@@ -138,7 +138,7 @@ export const OrderDetail = () => {
                       {payment.status}
                     </span>
                   </div>
-                  <div className="space-y-1 text-sm text-gray-600">
+                  <div className="space-y-1 text-gray-600 text-sm">
                     <p>
                       <strong>Payment ID:</strong> {payment.id}
                     </p>
@@ -178,7 +178,7 @@ const Section = ({
 }) => {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
-      <h2 className="mb-4 text-xl font-bold text-gray-900">{title}</h2>
+      <h2 className="mb-4 font-bold text-gray-900 text-xl">{title}</h2>
       <div className="space-y-3">{children}</div>
     </div>
   );
@@ -193,8 +193,8 @@ const InfoRow = ({
 }) => {
   return (
     <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
-      <dt className="w-48 text-sm font-medium text-gray-700">{label}</dt>
-      <dd className="text-sm text-gray-900">{value}</dd>
+      <dt className="w-48 font-medium text-gray-700 text-sm">{label}</dt>
+      <dd className="text-gray-900 text-sm">{value}</dd>
     </div>
   );
 };

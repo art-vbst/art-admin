@@ -64,7 +64,7 @@ export const ArtworkDetail = () => {
         ]}
       />
 
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">{artwork.title}</h1>
+      <h1 className="mb-8 font-bold text-3xl text-gray-900">{artwork.title}</h1>
 
       <div className="grid gap-8 lg:grid-cols-2">
         <ArtworkForm
@@ -156,23 +156,23 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
-      <h2 className="mb-4 text-xl font-bold text-gray-900">Artwork Details</h2>
+      <h2 className="mb-4 font-bold text-gray-900 text-xl">Artwork Details</h2>
 
       {error && (
-        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mb-4 rounded border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+        <div className="mb-4 rounded border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
           {success}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             ID
           </label>
           <input
@@ -184,7 +184,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Title
           </label>
           <input
@@ -200,7 +200,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block font-medium text-gray-700 text-sm">
               Painting Number
             </label>
             <input
@@ -213,7 +213,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block font-medium text-gray-700 text-sm">
               Painting Year
             </label>
             <input
@@ -229,7 +229,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block font-medium text-gray-700 text-sm">
               Width (inches)
             </label>
             <input
@@ -244,7 +244,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block font-medium text-gray-700 text-sm">
               Height (inches)
             </label>
             <input
@@ -261,7 +261,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Price (USD)
           </label>
           <input
@@ -277,7 +277,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 font-medium text-gray-700 text-sm">
             <input
               type="checkbox"
               checked={formData.paper}
@@ -291,7 +291,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Sort Order
           </label>
           <input
@@ -305,7 +305,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Sold At
           </label>
           <input
@@ -319,7 +319,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Status
           </label>
           <select
@@ -342,7 +342,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Medium
           </label>
           <select
@@ -364,7 +364,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Category
           </label>
           <select
@@ -385,7 +385,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Created At
           </label>
           <input
@@ -397,7 +397,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block font-medium text-gray-700 text-sm">
             Order ID
           </label>
           <input
@@ -413,7 +413,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
         <div className="flex gap-3 pt-4">
           <button
             type="submit"
-            className="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+            className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
             disabled={submitting}
           >
             {submitting ? 'Saving...' : 'Save'}
@@ -421,7 +421,7 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(true)}
-            className="rounded border border-red-600 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+            className="rounded border border-red-600 px-4 py-2 font-medium text-red-600 text-sm hover:bg-red-50"
           >
             Delete
           </button>
@@ -431,10 +431,10 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="max-w-md rounded-lg bg-white p-6">
-            <h3 className="mb-4 text-lg font-bold text-gray-900">
+            <h3 className="mb-4 font-bold text-gray-900 text-lg">
               Delete Artwork?
             </h3>
-            <p className="mb-6 text-sm text-gray-600">
+            <p className="mb-6 text-gray-600 text-sm">
               Are you sure you want to delete this artwork? This action cannot
               be undone.
             </p>
@@ -442,14 +442,14 @@ const ArtworkForm = ({ artwork, onUpdate, onDelete }: ArtworkFormProps) => {
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                className="rounded bg-red-600 px-4 py-2 font-medium text-sm text-white hover:bg-red-700"
               >
                 Delete
               </button>
@@ -473,11 +473,11 @@ const ImagesPanel = ({ artwork, onUpdate }: ImagesPanelProps) => {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">Images</h2>
+        <h2 className="font-bold text-gray-900 text-xl">Images</h2>
         <button
           type="button"
           onClick={() => setShowAddModal(true)}
-          className="rounded bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-700"
+          className="rounded bg-gray-900 px-3 py-2 font-medium text-sm text-white hover:bg-gray-700"
         >
           Add Image
         </button>
@@ -485,7 +485,7 @@ const ImagesPanel = ({ artwork, onUpdate }: ImagesPanelProps) => {
 
       {artwork.images.length === 0 ? (
         <div className="rounded border border-gray-200 bg-gray-50 p-8 text-center">
-          <p className="text-sm text-gray-600">No images yet</p>
+          <p className="text-gray-600 text-sm">No images yet</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -502,7 +502,7 @@ const ImagesPanel = ({ artwork, onUpdate }: ImagesPanelProps) => {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="p-2 text-xs text-gray-600">
+              <div className="p-2 text-gray-600 text-xs">
                 {image.is_main_image && (
                   <span className="mr-2 rounded bg-gray-900 px-2 py-1 text-white">
                     Primary
@@ -588,17 +588,17 @@ const AddImageModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="max-w-md rounded-lg bg-white p-6">
-        <h3 className="mb-4 text-lg font-bold text-gray-900">Add Image</h3>
+        <h3 className="mb-4 font-bold text-gray-900 text-lg">Add Image</h3>
 
         {error && (
-          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block font-medium text-gray-700 text-sm">
               Image File
             </label>
             <input
@@ -611,7 +611,7 @@ const AddImageModal = ({
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <label className="flex items-center gap-2 font-medium text-gray-700 text-sm">
               <input
                 type="checkbox"
                 checked={isMainImage}
@@ -626,14 +626,14 @@ const AddImageModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50"
               disabled={submitting}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+              className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
               disabled={submitting}
             >
               {submitting ? 'Uploading...' : 'Upload'}
@@ -690,10 +690,10 @@ const ImageDetailModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="max-w-2xl rounded-lg bg-white p-6">
-        <h3 className="mb-4 text-lg font-bold text-gray-900">Image Details</h3>
+        <h3 className="mb-4 font-bold text-gray-900 text-lg">Image Details</h3>
 
         {error && (
-          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
             {error}
           </div>
         )}
@@ -706,7 +706,7 @@ const ImageDetailModal = ({
           />
         </div>
 
-        <div className="mb-4 space-y-2 text-sm text-gray-600">
+        <div className="mb-4 space-y-2 text-gray-600 text-sm">
           <p>
             <strong>Created:</strong>{' '}
             {new Date(image.created_at).toLocaleString()}
@@ -726,7 +726,7 @@ const ImageDetailModal = ({
           <button
             type="button"
             onClick={togglePrimary}
-            className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            className="rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50 disabled:opacity-50"
             disabled={submitting}
           >
             {image.is_main_image ? 'Unset Primary' : 'Set as Primary'}
@@ -734,14 +734,14 @@ const ImageDetailModal = ({
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(true)}
-            className="rounded border border-red-600 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+            className="rounded border border-red-600 px-4 py-2 font-medium text-red-600 text-sm hover:bg-red-50"
           >
             Delete
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="ml-auto rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="ml-auto rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50"
           >
             Close
           </button>
@@ -750,10 +750,10 @@ const ImageDetailModal = ({
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="max-w-md rounded-lg bg-white p-6">
-              <h4 className="mb-4 text-lg font-bold text-gray-900">
+              <h4 className="mb-4 font-bold text-gray-900 text-lg">
                 Delete Image?
               </h4>
-              <p className="mb-6 text-sm text-gray-600">
+              <p className="mb-6 text-gray-600 text-sm">
                 Are you sure you want to delete this image? This action cannot
                 be undone.
               </p>
@@ -761,14 +761,14 @@ const ImageDetailModal = ({
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleDelete}
-                  className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                  className="rounded bg-red-600 px-4 py-2 font-medium text-sm text-white hover:bg-red-700"
                 >
                   Delete
                 </button>

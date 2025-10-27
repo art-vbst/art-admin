@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { usePageData } from '~/hooks/usePageData';
@@ -57,10 +57,10 @@ export const OrderList = () => {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ label: 'orders' }]} />
 
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">Orders</h1>
+      <h1 className="mb-8 font-bold text-3xl text-gray-900">Orders</h1>
 
       {error && (
-        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
           Error loading orders: {error.message}
         </div>
       )}
@@ -77,7 +77,7 @@ export const OrderList = () => {
           <button
             type="button"
             onClick={() => toggleSort('created_at')}
-            className="rounded border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded border border-gray-300 px-3 py-2 font-medium text-sm hover:bg-gray-50"
           >
             Created{' '}
             {sortField === 'created_at' &&
@@ -86,7 +86,7 @@ export const OrderList = () => {
           <button
             type="button"
             onClick={() => toggleSort('status')}
-            className="rounded border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded border border-gray-300 px-3 py-2 font-medium text-sm hover:bg-gray-50"
           >
             Status{' '}
             {sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')}
@@ -107,7 +107,7 @@ export const OrderList = () => {
       ) : (
         <div className="overflow-x-auto rounded border border-gray-200">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50">
+            <thead className="border-gray-200 border-b bg-gray-50">
               <tr>
                 <th className="px-4 py-3 font-medium text-gray-900">ID</th>
                 <th className="px-4 py-3 font-medium text-gray-900">Status</th>
@@ -127,13 +127,13 @@ export const OrderList = () => {
                 <tr
                   key={order.id}
                   onClick={() => navigate(`/orders/${order.id}`)}
-                  className="cursor-pointer border-b border-gray-200 hover:bg-gray-50"
+                  className="cursor-pointer border-gray-200 border-b hover:bg-gray-50"
                 >
                   <td className="px-4 py-3 font-medium">
                     {order.id.slice(0, 8)}...
                   </td>
                   <td className="px-4 py-3">
-                    <span className="rounded bg-gray-100 px-2 py-1 text-xs font-medium">
+                    <span className="rounded bg-gray-100 px-2 py-1 font-medium text-xs">
                       {order.status}
                     </span>
                   </td>

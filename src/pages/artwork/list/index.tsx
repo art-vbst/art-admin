@@ -4,7 +4,7 @@ import type {
   ArtworkMedium,
   ArtworkStatus,
 } from '@art-vbst/art-types';
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { usePageData } from '~/hooks/usePageData';
@@ -65,18 +65,18 @@ export const ArtworkList = () => {
       <Breadcrumbs items={[{ label: 'artworks' }]} />
 
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Artworks</h1>
+        <h1 className="font-bold text-3xl text-gray-900">Artworks</h1>
         <button
           type="button"
           onClick={() => setShowCreateModal(true)}
-          className="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+          className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700"
         >
           Create Artwork
         </button>
       </div>
 
       {error && (
-        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
           Error loading artworks: {error.message}
         </div>
       )}
@@ -93,7 +93,7 @@ export const ArtworkList = () => {
           <button
             type="button"
             onClick={() => toggleSort('title')}
-            className="rounded border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded border border-gray-300 px-3 py-2 font-medium text-sm hover:bg-gray-50"
           >
             Title{' '}
             {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
@@ -101,7 +101,7 @@ export const ArtworkList = () => {
           <button
             type="button"
             onClick={() => toggleSort('created_at')}
-            className="rounded border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded border border-gray-300 px-3 py-2 font-medium text-sm hover:bg-gray-50"
           >
             Created{' '}
             {sortField === 'created_at' &&
@@ -122,7 +122,7 @@ export const ArtworkList = () => {
           <button
             type="button"
             onClick={() => setShowCreateModal(true)}
-            className="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+            className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700"
           >
             Create Artwork
           </button>
@@ -130,7 +130,7 @@ export const ArtworkList = () => {
       ) : (
         <div className="overflow-x-auto rounded border border-gray-200">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50">
+            <thead className="border-gray-200 border-b bg-gray-50">
               <tr>
                 <th className="px-4 py-3 font-medium text-gray-900">Title</th>
                 <th className="px-4 py-3 font-medium text-gray-900">ID</th>
@@ -154,7 +154,7 @@ export const ArtworkList = () => {
                 <tr
                   key={artwork.id}
                   onClick={() => navigate(`/artworks/${artwork.id}`)}
-                  className="cursor-pointer border-b border-gray-200 hover:bg-gray-50"
+                  className="cursor-pointer border-gray-200 border-b hover:bg-gray-50"
                 >
                   <td className="px-4 py-3 font-medium">{artwork.title}</td>
                   <td className="px-4 py-3 text-gray-600">
@@ -266,17 +266,17 @@ const CreateArtworkModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6">
-        <h2 className="mb-4 text-xl font-bold text-gray-900">Create Artwork</h2>
+        <h2 className="mb-4 font-bold text-gray-900 text-xl">Create Artwork</h2>
 
         {error && (
-          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-900">
+            <label className="mb-1 block font-medium text-gray-900 text-sm">
               Title *
             </label>
             <input
@@ -290,7 +290,7 @@ const CreateArtworkModal = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-900">
+              <label className="mb-1 block font-medium text-gray-900 text-sm">
                 Width (inches)
               </label>
               <input
@@ -303,7 +303,7 @@ const CreateArtworkModal = ({
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-900">
+              <label className="mb-1 block font-medium text-gray-900 text-sm">
                 Height (inches)
               </label>
               <input
@@ -318,7 +318,7 @@ const CreateArtworkModal = ({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-900">
+            <label className="mb-1 block font-medium text-gray-900 text-sm">
               Price (USD)
             </label>
             <input
@@ -332,7 +332,7 @@ const CreateArtworkModal = ({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-900">
+            <label className="mb-1 block font-medium text-gray-900 text-sm">
               Status
             </label>
             <select
@@ -350,7 +350,7 @@ const CreateArtworkModal = ({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-900">
+            <label className="mb-1 block font-medium text-gray-900 text-sm">
               Medium
             </label>
             <select
@@ -367,7 +367,7 @@ const CreateArtworkModal = ({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-900">
+            <label className="mb-1 block font-medium text-gray-900 text-sm">
               Category
             </label>
             <select
@@ -384,7 +384,7 @@ const CreateArtworkModal = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-900">
+              <label className="mb-1 block font-medium text-gray-900 text-sm">
                 Painting Number
               </label>
               <input
@@ -395,7 +395,7 @@ const CreateArtworkModal = ({
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-900">
+              <label className="mb-1 block font-medium text-gray-900 text-sm">
                 Painting Year
               </label>
               <input
@@ -408,7 +408,7 @@ const CreateArtworkModal = ({
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-900">
+            <label className="flex items-center gap-2 font-medium text-gray-900 text-sm">
               <input
                 type="checkbox"
                 checked={paper}
@@ -423,14 +423,14 @@ const CreateArtworkModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded border border-gray-300 px-4 py-2 font-medium text-gray-700 text-sm hover:bg-gray-50"
               disabled={submitting}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+              className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
               disabled={submitting}
             >
               {submitting ? 'Creating...' : 'Create'}

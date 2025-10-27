@@ -12,7 +12,7 @@ type BreadcrumbsProps = {
 export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
   return (
     <nav className="mb-6">
-      <ol className="flex items-center gap-2 text-sm text-gray-600">
+      <ol className="flex items-center gap-2 text-gray-600 text-sm">
         {items.map((item, index) => (
           <li key={index} className="flex items-center gap-2">
             {index > 0 && <span>&gt;</span>}
