@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from 'react';
 import { cn } from '~/utils/format';
 
 type LabelProps = {
@@ -70,64 +69,45 @@ export const Select = ({ label, options, ...props }: SelectProps) => {
   );
 };
 
-type ButtonProps = {
-  children: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = ({ children, ...props }: ButtonProps) => {
+export const Button = ({ ...props }: ButtonProps) => {
   return (
     <button
-      className="rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
       {...props}
-    >
-      {children}
-    </button>
+      type={props.type ?? 'button'}
+      className={cn(
+        'rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50',
+        props.className,
+      )}
+    />
   );
 };
 
-type TableCellProps = {
-  th?: boolean;
-  children: React.ReactNode;
-} & React.TdHTMLAttributes<HTMLTableCellElement>;
-
 type TableProps<T> = {
-  headers: string[];
   data: T[];
+  headers: string[];
   render: RowRenderer<T>;
 };
 
 type RowRenderer<T> = (item: T) => TableCellProps[];
 
-type TableColumn = {
+type Column<T> = {
   header: string;
-} & TableCellProps;
+  cell: (item: T) => TableCellProps;
+};
 
-export const useTableColumns = <T,>(columns: TableColumn[]) => {
-  const headers = useMemo(
-    () => columns.map((column) => column.header),
-    [columns],
-  );
+export const processColumns = <T,>(columns: Column<T>[]) => {
+  const headers = columns.map((c) => c.header);
 
-  const render = useCallback(
-    (item: T): TableCellProps[] => {
-      return columns.map(({ header, ...cellProps }: TableColumn) => cellProps);
-    },
-    [columns],
-  );
+  const render = (item: T) => {
+    return columns.map((col) => col.cell(item));
+  };
 
   return { headers, render };
 };
 
-export const TableCell = ({ th, ...props }: TableCellProps) => {
-  const localProps = {
-    ...props,
-    className: cn('px-4 py-3', props.className),
-  };
-
-  return th ? <th {...localProps} /> : <td {...localProps} />;
-};
-
-export const Table = <T,>({ headers, data, render }: TableProps<T>) => {
+export const Table = <T,>({ data, headers, render }: TableProps<T>) => {
   return (
     <table className="w-full text-left text-sm">
       <thead className="border-gray-200 border-b bg-gray-50">
@@ -150,4 +130,33 @@ export const Table = <T,>({ headers, data, render }: TableProps<T>) => {
       </tbody>
     </table>
   );
+};
+
+type TableCellProps = {
+  th?: boolean;
+  children: React.ReactNode;
+} & React.TdHTMLAttributes<HTMLTableCellElement>;
+
+export const TableCell = ({ th, ...props }: TableCellProps) => {
+  const localProps = {
+    ...props,
+    className: cn('px-4 py-3', props.className),
+  };
+
+  return th ? <th {...localProps} /> : <td {...localProps} />;
+};
+
+export const ErrorText = ({
+  message,
+  className,
+}: {
+  message: string;
+  className?: string;
+}) => {
+  const localClassName = cn(
+    'rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm',
+    className,
+  );
+
+  return <div className={localClassName}>{message}</div>;
 };
