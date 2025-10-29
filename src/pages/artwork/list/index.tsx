@@ -60,6 +60,19 @@ export const ArtworkList = () => {
     }
   };
 
+  const artworkColumns = (artwork: Artwork) => [
+    { header: 'Title', value: artwork.title },
+    { header: 'ID', value: artwork.id.slice(0, 8) },
+    { header: 'Number', value: artwork.painting_number ?? '—' },
+    { header: 'Year', value: artwork.painting_year ?? '—' },
+    {
+      header: 'Size (W×H)',
+      value: `${artwork.width_inches}×${artwork.height_inches}"`,
+    },
+    { header: 'Price', value: formatUSD(artwork.price_cents) },
+    { header: 'Status', value: artwork.status },
+  ];
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ label: 'artworks' }]} />

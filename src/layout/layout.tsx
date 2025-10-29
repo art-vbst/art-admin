@@ -16,7 +16,7 @@ export const Layout = () => {
 };
 
 const Navbar = () => {
-  const { user, loading: userLoading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { execute, loading: logoutPending } = useAction(() => logout());
@@ -26,7 +26,7 @@ const Navbar = () => {
     navigate('/login');
   };
 
-  if (!user && !userLoading) return null;
+  if (!user) return null;
 
   return (
     <header className="border-gray-200 border-b bg-white">

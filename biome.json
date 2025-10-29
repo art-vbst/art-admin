@@ -9,6 +9,9 @@
     "rules": {
       "a11y": "off",
       "recommended": true,
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
       "nursery": {
         "useSortedClasses": "warn"
       }

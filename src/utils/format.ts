@@ -1,4 +1,8 @@
+import clsx, { type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
+
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export const formatUSD = (cents: number): string => {
   const dollars = cents / 100;
