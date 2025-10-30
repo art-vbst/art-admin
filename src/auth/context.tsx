@@ -1,9 +1,8 @@
 import type { User } from '@art-vbst/art-types';
-import type { AxiosResponse } from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import { usePageData } from '~/hooks/usePageData';
-import { me, refresh } from './api';
+import { me } from './api';
 
 type AuthContextType = {
   loading: boolean;
@@ -18,26 +17,12 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = () => {
-  return <AuthLoader action={me} tryRefresh />;
-};
-
-const AuthLoader = ({
-  action,
-  tryRefresh,
-}: {
-  action: () => Promise<AxiosResponse<User>>;
-  tryRefresh?: boolean;
-}) => {
   const [user, setUser] = useState<User | null>(null);
-  const { data, loading, error } = usePageData(action);
+  const { data, loading } = usePageData(me);
 
   useEffect(() => {
     setUser(data);
   }, [data]);
-
-  if (tryRefresh && error?.response?.status === 401) {
-    return <AuthLoader action={refresh} />;
-  }
 
   return (
     <AuthContext value={{ user: user ?? data, setUser, loading }}>

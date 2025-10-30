@@ -2,7 +2,13 @@ import type { Artwork } from '@art-vbst/art-types';
 import { processColumns, Table } from '~/components/ui';
 import { formatUSD } from '~/utils/format';
 
-export const ArtTable = ({ artworks }: { artworks: Artwork[] }) => {
+export const ArtTable = ({
+  artworks,
+  onRowClick,
+}: {
+  artworks: Artwork[];
+  onRowClick: (artwork: Artwork) => void;
+}) => {
   const { headers, render } = processColumns<Artwork>([
     {
       header: 'Title',
@@ -55,5 +61,12 @@ export const ArtTable = ({ artworks }: { artworks: Artwork[] }) => {
     },
   ]);
 
-  return <Table data={artworks} headers={headers} render={render} />;
+  return (
+    <Table
+      data={artworks}
+      headers={headers}
+      render={render}
+      onRowClick={onRowClick}
+    />
+  );
 };

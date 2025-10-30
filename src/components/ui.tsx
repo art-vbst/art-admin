@@ -1,12 +1,16 @@
+import { useField } from 'react-final-form';
 import { cn } from '~/utils/format';
 
 type LabelProps = {
   label: string;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;
 
-export const Label = ({ label, ...props }: LabelProps) => {
+export const Label = ({ label, className, ...props }: LabelProps) => {
   return (
-    <label className="mb-1 block font-medium text-gray-700 text-sm" {...props}>
+    <label
+      className={cn('mb-1 block font-medium text-gray-700 text-sm', className)}
+      {...props}
+    >
       {label}
     </label>
   );
@@ -14,50 +18,116 @@ export const Label = ({ label, ...props }: LabelProps) => {
 
 type InputProps = {
   label: string;
+  error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Input = ({ label, ...props }: InputProps) => {
+export const Input = ({ label, error, className, ...props }: InputProps) => {
   return (
     <div>
       <Label label={label} />
       <input
         {...props}
-        className="w-full rounded border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100"
-        disabled={props.disabled ?? props.readOnly}
+        className={cn(
+          'w-full rounded border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100',
+          error && 'border-red-500',
+          className,
+        )}
       />
+      {error && <ErrorText message={error} />}
     </div>
+  );
+};
+
+type InputFieldProps = {
+  label: string;
+  name: string;
+} & React.InputHTMLAttributes<HTMLInputElement>;
+
+export const InputField = <T extends string | number = string>({
+  label,
+  name,
+  ...props
+}: InputFieldProps) => {
+  const { input, meta } = useField<T>(name);
+
+  return (
+    <Input
+      {...input}
+      {...props}
+      label={label}
+      error={meta.touched && meta.error}
+    />
   );
 };
 
 type CheckboxProps = {
   label: string;
-  checked: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Checkbox = ({ label, ...props }: CheckboxProps) => {
+export const Checkbox = ({
+  label,
+  error,
+  className,
+  ...props
+}: CheckboxProps) => {
   return (
     <div>
       <Label label={label} />
-      <input type="checkbox" {...props} className="disabled:opacity-50" />
+      <input
+        type="checkbox"
+        {...props}
+        className={cn('disabled:opacity-50', className)}
+      />
+      {error && <ErrorText message={error} />}
     </div>
+  );
+};
+
+type CheckboxFieldProps = {
+  label: string;
+  name: string;
+} & React.InputHTMLAttributes<HTMLInputElement>;
+
+export const CheckboxField = ({
+  label,
+  name,
+  ...props
+}: CheckboxFieldProps) => {
+  const { input, meta } = useField(name, { type: 'checkbox' });
+
+  return (
+    <Checkbox
+      {...input}
+      {...props}
+      label={label}
+      error={meta.touched && meta.error}
+    />
   );
 };
 
 type SelectProps = {
   label: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { label: string; value: string }[];
+  error?: string;
 } & React.SelectHTMLAttributes<HTMLSelectElement>;
 
-export const Select = ({ label, options, ...props }: SelectProps) => {
+export const Select = ({
+  label,
+  options,
+  error,
+  className,
+  ...props
+}: SelectProps) => {
   return (
     <div>
       <Label label={label} />
       <select
         {...props}
-        className="w-full rounded border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100"
+        className={cn(
+          'w-full rounded border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100',
+          className,
+        )}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -65,32 +135,63 @@ export const Select = ({ label, options, ...props }: SelectProps) => {
           </option>
         ))}
       </select>
+      {error && <ErrorText message={error} />}
     </div>
   );
 };
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type SelectFieldProps = {
+  label: string;
+  name: string;
+  options: { label: string; value: string }[];
+} & React.SelectHTMLAttributes<HTMLSelectElement>;
+export const SelectField = ({
+  label,
+  name,
+  options,
+  ...props
+}: SelectFieldProps) => {
+  const { input, meta } = useField(name, { type: 'select' });
 
-export const Button = ({ ...props }: ButtonProps) => {
+  return (
+    <Select
+      {...input}
+      {...props}
+      label={label}
+      options={options}
+      error={meta.touched && meta.error}
+    />
+  );
+};
+
+type ButtonVariant = 'primary' | 'secondary';
+
+type ButtonProps = {
+  variant?: ButtonVariant;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const Button = ({
+  variant = 'primary',
+  className,
+  ...props
+}: ButtonProps) => {
+  const variantClassNames = {
+    primary: 'bg-gray-900 text-white hover:bg-gray-700',
+    secondary: 'border border-gray-300 text-gray-700 hover:bg-gray-100',
+  };
+
   return (
     <button
       {...props}
       type={props.type ?? 'button'}
       className={cn(
-        'rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50',
-        props.className,
+        'cursor-pointer rounded px-4 py-2 font-medium text-sm disabled:opacity-50',
+        variantClassNames[variant],
+        className,
       )}
     />
   );
 };
-
-type TableProps<T> = {
-  data: T[];
-  headers: string[];
-  render: RowRenderer<T>;
-};
-
-type RowRenderer<T> = (item: T) => TableCellProps[];
 
 type Column<T> = {
   header: string;
@@ -107,7 +208,21 @@ export const processColumns = <T,>(columns: Column<T>[]) => {
   return { headers, render };
 };
 
-export const Table = <T,>({ data, headers, render }: TableProps<T>) => {
+type TableProps<T> = {
+  data: T[];
+  headers: string[];
+  render: RowRenderer<T>;
+  onRowClick?: (item: T) => void;
+};
+
+type RowRenderer<T> = (item: T) => TableCellProps[];
+
+export const Table = <T,>({
+  data,
+  headers,
+  render,
+  onRowClick,
+}: TableProps<T>) => {
   return (
     <table className="w-full text-left text-sm">
       <thead className="border-gray-200 border-b bg-gray-50">
@@ -121,7 +236,11 @@ export const Table = <T,>({ data, headers, render }: TableProps<T>) => {
       </thead>
       <tbody>
         {data.map((item, i) => (
-          <tr key={i}>
+          <tr
+            key={i}
+            onClick={() => onRowClick?.(item)}
+            className={cn(onRowClick && 'cursor-pointer')}
+          >
             {render(item).map((cell, i) => (
               <TableCell key={i} {...cell} />
             ))}
@@ -159,4 +278,25 @@ export const ErrorText = ({
   );
 
   return <div className={localClassName}>{message}</div>;
+};
+
+type ModalProps = {
+  children: React.ReactNode;
+  onClose?: () => void;
+};
+
+export const Modal = ({ children, onClose }: ModalProps) => {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+    >
+      <div
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
 };

@@ -1,4 +1,5 @@
-import axios, { type AxiosRequestConfig } from 'axios';
+import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
+import { refresh } from '~/auth/api';
 
 export const http = axios.create({
   baseURL: import.meta.env.VITE_API_HOST,
@@ -7,6 +8,35 @@ export const http = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+type RetryRequest = AxiosRequestConfig & {
+  _retry: boolean;
+};
+
+http.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetryRequest;
+
+    if (
+      !originalRequest ||
+      originalRequest._retry ||
+      error.response?.status !== 401
+    ) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    try {
+      const response = await refresh();
+      const isMeRequest = originalRequest.url?.endsWith('/auth/me');
+      return isMeRequest ? response : http.request(originalRequest);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+);
 
 export class BaseEndpoint<T> {
   endpoint: string;

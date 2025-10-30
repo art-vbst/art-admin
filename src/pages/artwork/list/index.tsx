@@ -74,6 +74,7 @@ export const ArtworkList = () => {
             Create Artwork
           </button>
         }
+        onTableRowClick={(artwork) => navigate(`/artworks/${artwork.id}`)}
       />
 
       {showCreateModal && (
@@ -93,10 +94,12 @@ const ArtBody = ({
   loading,
   artworks,
   emptyActionNode,
+  onTableRowClick,
 }: {
   loading: boolean;
   artworks: Artwork[];
   emptyActionNode?: React.ReactNode;
+  onTableRowClick: (artwork: Artwork) => void;
 }) => {
   if (loading) {
     return (
@@ -119,7 +122,7 @@ const ArtBody = ({
 
   return (
     <div className="overflow-x-auto rounded border border-gray-200">
-      <ArtTable artworks={artworks} />
+      <ArtTable artworks={artworks} onRowClick={onTableRowClick} />
     </div>
   );
 };

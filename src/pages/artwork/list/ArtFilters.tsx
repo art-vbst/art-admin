@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '~/components/ui';
 import { type SortDirection, useSort } from '~/hooks/useSort';
 import { cn } from '~/utils/format';
 
@@ -73,12 +74,8 @@ function SortButton({
   };
 
   return (
-    <button
-      type="button"
-      onClick={() => toggleSort(field)}
-      className="rounded border border-gray-300 px-3 py-2 font-medium text-sm hover:bg-gray-50"
-    >
+    <Button onClick={() => toggleSort(field)} variant="secondary">
       {field} {getDirectionArrow(field, direction)}
-    </button>
+    </Button>
   );
 }
