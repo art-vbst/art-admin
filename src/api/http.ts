@@ -45,7 +45,7 @@ export class BaseEndpoint<T> {
     this.endpoint = endpoint;
   }
 
-  create(data: T, config: AxiosRequestConfig = {}) {
+  create(data: Partial<T>, config: AxiosRequestConfig = {}) {
     return http.post<T>(this.endpoint, data, config);
   }
 

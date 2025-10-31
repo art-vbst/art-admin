@@ -43,12 +43,8 @@ type InputFieldProps = {
   name: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const InputField = <T extends string | number = string>({
-  label,
-  name,
-  ...props
-}: InputFieldProps) => {
-  const { input, meta } = useField<T>(name);
+export const InputField = ({ label, name, ...props }: InputFieldProps) => {
+  const { input, meta } = useField(name);
 
   return (
     <Input

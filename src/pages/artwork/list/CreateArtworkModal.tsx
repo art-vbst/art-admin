@@ -12,6 +12,7 @@ import {
   Modal,
   SelectField,
 } from '~/components/ui';
+import { ArtEndpoint } from '../api';
 
 type CreateArtworkModalProps = {
   onClose: () => void;
@@ -22,9 +23,10 @@ export const CreateArtworkModal = ({
   onClose,
   onSuccess,
 }: CreateArtworkModalProps) => {
-  const handleSubmit = (values: Partial<Artwork>) => {
+  const handleSubmit = async (values: Partial<Artwork>) => {
     console.log(values);
-    onSuccess('test id');
+    const response = await ArtEndpoint.create(values);
+    console.log(response);
   };
 
   const handleCancel = () => {
@@ -39,14 +41,9 @@ export const CreateArtworkModal = ({
     height_inches: 0,
     price_cents: 0,
     paper: false,
-    sort_order: null,
-    sold_at: null,
     status: ArtworkStatus.Available,
     medium: ArtworkMedium.OilPanel,
     category: ArtworkCategory.Figure,
-    images: [],
-    created_at: '',
-    order_id: null,
   };
 
   const formRenderer = ({
@@ -57,10 +54,10 @@ export const CreateArtworkModal = ({
       <form onSubmit={handleSubmit} className="space-y-4">
         <InputField label="Title" name="title" />
         <div className="grid grid-cols-2 gap-4">
-          <InputField<number> label="Width" name="width_inches" />
-          <InputField<number> label="Height" name="height_inches" />
+          <InputField type="number" label="Width" name="width_inches" />
+          <InputField type="number" label="Height" name="height_inches" />
         </div>
-        <InputField<number> label="Price" name="price_cents" />
+        <InputField type="number" label="Price (cents)" name="price_cents" />
         <SelectField
           label="Status"
           name="status"
@@ -86,8 +83,16 @@ export const CreateArtworkModal = ({
           }))}
         />
         <div className="grid grid-cols-2 gap-4">
-          <InputField<number> label="Painting Number" name="painting_number" />
-          <InputField<number> label="Painting Year" name="painting_year" />
+          <InputField
+            type="number"
+            label="Painting Number"
+            name="painting_number"
+          />
+          <InputField
+            type="number"
+            label="Painting Year"
+            name="painting_year"
+          />
         </div>
         <CheckboxField label="Paper" name="paper" />
         <div className="space-x-2">
