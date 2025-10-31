@@ -3,7 +3,7 @@ import { Button } from '~/components/ui';
 import { type SortDirection, useSort } from '~/hooks/useSort';
 import { cn } from '~/utils/format';
 
-type SortField = 'title' | 'created_at';
+export type ArtSortField = 'title' | 'created_at';
 
 type ArtFiltersProps = {
   className?: string;
@@ -12,13 +12,13 @@ type ArtFiltersProps = {
 
 export type ArtFilters = {
   searchTerm: string;
-  sortField?: SortField;
+  sortField?: ArtSortField;
   sortDirection?: SortDirection;
 };
 
 export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { field, direction, toggleSort } = useSort<SortField>();
+  const { field, direction, toggleSort } = useSort<ArtSortField>();
 
   useEffect(() => {
     onFilterChange({
@@ -61,12 +61,15 @@ function SortButton({
   toggleSort,
   currentSortField,
 }: {
-  field: SortField;
+  field: ArtSortField;
   direction?: SortDirection;
-  toggleSort: (field: SortField) => void;
-  currentSortField?: SortField;
+  toggleSort: (field: ArtSortField) => void;
+  currentSortField?: ArtSortField;
 }) {
-  const getDirectionArrow = (field: SortField, direction?: SortDirection) => {
+  const getDirectionArrow = (
+    field: ArtSortField,
+    direction?: SortDirection,
+  ) => {
     if (field !== currentSortField) {
       return null;
     }

@@ -5,6 +5,7 @@ import {
   ArtworkStatus,
 } from '@art-vbst/art-types';
 import { Form, type FormRenderProps } from 'react-final-form';
+import toast from 'react-hot-toast';
 import {
   Button,
   CheckboxField,
@@ -12,6 +13,7 @@ import {
   Modal,
   SelectField,
 } from '~/components/ui';
+import { useAction } from '~/hooks/useAction';
 import { ArtEndpoint } from '../api';
 
 type CreateArtworkModalProps = {
@@ -19,31 +21,41 @@ type CreateArtworkModalProps = {
   onSuccess: (id: string) => void;
 };
 
+const initialFormValues: Partial<Artwork> = {
+  title: '',
+  painting_number: null,
+  painting_year: null,
+  width_inches: 0,
+  height_inches: 0,
+  price_cents: 0,
+  paper: false,
+  status: ArtworkStatus.Available,
+  medium: ArtworkMedium.OilPanel,
+  category: ArtworkCategory.Figure,
+};
+
 export const CreateArtworkModal = ({
   onClose,
   onSuccess,
 }: CreateArtworkModalProps) => {
+  const { execute: create } = useAction((values: Partial<Artwork>) =>
+    ArtEndpoint.create(values),
+  );
+
   const handleSubmit = async (values: Partial<Artwork>) => {
-    console.log(values);
-    const response = await ArtEndpoint.create(values);
-    console.log(response);
+    const response = await create(values);
+
+    if (!response) {
+      toast.error('Failed to create artwork');
+      return;
+    }
+
+    onSuccess(response.id);
+    onClose();
   };
 
   const handleCancel = () => {
     onClose();
-  };
-
-  const initialValues: Partial<Artwork> = {
-    title: '',
-    painting_number: null,
-    painting_year: null,
-    width_inches: 0,
-    height_inches: 0,
-    price_cents: 0,
-    paper: false,
-    status: ArtworkStatus.Available,
-    medium: ArtworkMedium.OilPanel,
-    category: ArtworkCategory.Figure,
   };
 
   const formRenderer = ({
@@ -115,7 +127,7 @@ export const CreateArtworkModal = ({
     <Modal onClose={onClose}>
       <Form<Partial<Artwork>>
         onSubmit={handleSubmit}
-        initialValues={initialValues}
+        initialValues={initialFormValues}
         render={formRenderer}
       />
     </Modal>

@@ -1,6 +1,7 @@
 import type { Artwork } from '@art-vbst/art-types';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { Button, ErrorText } from '~/components/ui';
 import { usePageData } from '~/hooks/usePageData';
@@ -8,41 +9,27 @@ import { ArtEndpoint } from '../api';
 import { ArtFilters } from './ArtFilters';
 import { ArtTable } from './ArtTable';
 import { CreateArtworkModal } from './CreateArtworkModal';
+import { useSortedArtworks } from './useSortedArtworks';
 
 export const ArtworkList = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState<ArtFilters>({ searchTerm: '' });
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const {
-    data: artworks,
-    loading,
-    error,
-  } = usePageData(() => ArtEndpoint.list());
+  const { data, loading, error, refetch } = usePageData(() =>
+    ArtEndpoint.list(),
+  );
+  const artworks = useSortedArtworks(data, filters);
 
-  const filteredAndSortedArtworks = useMemo(() => {
-    if (!artworks) return [];
+  const successToast = (id: string) => {
+    const jsx = (
+      <div>
+        Artwork created! <Link to={`/artworks/${id}`}>View</Link>
+      </div>
+    );
 
-    let filtered = artworks;
-
-    if (filters.searchTerm.trim()) {
-      const term = filters.searchTerm.toLowerCase();
-      filtered = artworks.filter((art) =>
-        art.title.toLowerCase().includes(term),
-      );
-    }
-
-    return [...filtered].sort((a, b) => {
-      if (filters.sortField === 'title') {
-        const comparison = a.title.localeCompare(b.title);
-        return filters.sortDirection === 'asc' ? comparison : -comparison;
-      }
-
-      const aDate = new Date(a.created_at).getTime();
-      const bDate = new Date(b.created_at).getTime();
-      return filters.sortDirection === 'desc' ? bDate - aDate : aDate - bDate;
-    });
-  }, [artworks, filters]);
+    return toast.success(jsx);
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -64,7 +51,7 @@ export const ArtworkList = () => {
 
       <ArtBody
         loading={loading}
-        artworks={filteredAndSortedArtworks}
+        artworks={artworks}
         emptyActionNode={
           <button
             type="button"
@@ -81,8 +68,8 @@ export const ArtworkList = () => {
         <CreateArtworkModal
           onClose={() => setShowCreateModal(false)}
           onSuccess={(id) => {
-            setShowCreateModal(false);
-            navigate(`/artworks/${id}`);
+            refetch();
+            successToast(id);
           }}
         />
       )}
