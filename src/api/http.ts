@@ -18,11 +18,14 @@ http.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryRequest;
 
-    if (
+    const shouldSkipRetry =
       !originalRequest ||
       originalRequest._retry ||
-      error.response?.status !== 401
-    ) {
+      error.response?.status !== 401;
+
+    const isRefreshRequest = originalRequest.url?.endsWith('/auth/refresh');
+
+    if (shouldSkipRetry || isRefreshRequest) {
       return Promise.reject(error);
     }
 
