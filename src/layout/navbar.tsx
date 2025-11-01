@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { logout } from '~/auth/api';
 import { AuthContext } from '~/auth/context';
+import { errorToast } from '~/components/toast';
 import { Button } from '~/components/ui';
 import { useAction } from '~/hooks/useAction';
 
@@ -12,8 +13,8 @@ export const Navbar = () => {
   const { execute, loading: logoutPending } = useAction(() => logout());
 
   const handleLogout = async () => {
-    await execute();
-    navigate('/login');
+    await execute().catch(() => errorToast('Failed to logout'));
+    navigate(0);
   };
 
   if (!user) return null;

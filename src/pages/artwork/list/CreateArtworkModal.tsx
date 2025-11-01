@@ -5,7 +5,7 @@ import {
   ArtworkStatus,
 } from '@art-vbst/art-types';
 import { Form, type FormRenderProps } from 'react-final-form';
-import toast from 'react-hot-toast';
+import { errorToast, successToast } from '~/components/toast';
 import {
   Button,
   CheckboxField,
@@ -18,7 +18,7 @@ import { ArtEndpoint } from '../api';
 
 type CreateArtworkModalProps = {
   onClose: () => void;
-  onSuccess: (id: string) => void;
+  onSuccess: () => void;
 };
 
 const initialFormValues: Partial<Artwork> = {
@@ -46,82 +46,77 @@ export const CreateArtworkModal = ({
     const response = await create(values);
 
     if (!response) {
-      toast.error('Failed to create artwork');
+      errorToast('Failed to create artwork');
       return;
     }
 
-    onSuccess(response.id);
-    onClose();
-  };
-
-  const handleCancel = () => {
+    successToast('Artwork created', `/artworks/${response.id}`);
+    onSuccess();
     onClose();
   };
 
   const formRenderer = ({
     handleSubmit,
     submitting,
-  }: FormRenderProps<Partial<Artwork>>) => {
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <InputField label="Title" name="title" />
-        <div className="grid grid-cols-2 gap-4">
-          <InputField type="number" label="Width" name="width_inches" />
-          <InputField type="number" label="Height" name="height_inches" />
-        </div>
-        <InputField type="number" label="Price (cents)" name="price_cents" />
-        <SelectField
-          label="Status"
-          name="status"
-          options={Object.values(ArtworkStatus).map((status) => ({
-            label: status,
-            value: status,
-          }))}
+    form,
+  }: FormRenderProps<Partial<Artwork>>) => (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <InputField label="Title" name="title" />
+      <div className="grid grid-cols-2 gap-4">
+        <InputField type="number" label="Width" name="width_inches" />
+        <InputField type="number" label="Height" name="height_inches" />
+      </div>
+      <InputField type="number" label="Price (cents)" name="price_cents" />
+      <SelectField
+        label="Status"
+        name="status"
+        options={Object.values(ArtworkStatus).map((status) => ({
+          label: status,
+          value: status,
+        }))}
+      />
+      <SelectField
+        label="Medium"
+        name="medium"
+        options={Object.values(ArtworkMedium).map((medium) => ({
+          label: medium,
+          value: medium,
+        }))}
+      />
+      <SelectField
+        label="Category"
+        name="category"
+        options={Object.values(ArtworkCategory).map((category) => ({
+          label: category,
+          value: category,
+        }))}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <InputField
+          type="number"
+          label="Painting Number"
+          name="painting_number"
         />
-        <SelectField
-          label="Medium"
-          name="medium"
-          options={Object.values(ArtworkMedium).map((medium) => ({
-            label: medium,
-            value: medium,
-          }))}
-        />
-        <SelectField
-          label="Category"
-          name="category"
-          options={Object.values(ArtworkCategory).map((category) => ({
-            label: category,
-            value: category,
-          }))}
-        />
-        <div className="grid grid-cols-2 gap-4">
-          <InputField
-            type="number"
-            label="Painting Number"
-            name="painting_number"
-          />
-          <InputField
-            type="number"
-            label="Painting Year"
-            name="painting_year"
-          />
-        </div>
-        <CheckboxField label="Paper" name="paper" />
-        <div className="space-x-2">
-          <Button
-            onClick={handleCancel}
-            disabled={submitting}
-            variant="secondary"
-          >
-            Cancel
-          </Button>
-          <Button type="submit" disabled={submitting}>
-            Create
-          </Button>
-        </div>
-      </form>
-    );
-  };
+        <InputField type="number" label="Painting Year" name="painting_year" />
+      </div>
+      <CheckboxField label="Paper" name="paper" />
+      <div className="space-x-2">
+        <Button
+          onClick={() => {
+            form.restart();
+            onClose();
+          }}
+          disabled={submitting}
+          variant="secondary"
+        >
+          Cancel
+        </Button>
+        <Button type="submit" disabled={submitting}>
+          Create
+        </Button>
+      </div>
+    </form>
+  );
 
   return (
     <Modal onClose={onClose}>

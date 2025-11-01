@@ -65,13 +65,9 @@ export class BaseEndpoint<T> {
     id: number | string,
     data: Partial<T>,
     config: AxiosRequestConfig = {},
-    patch = true,
   ) {
     const endpoint = `${this.endpoint}/${id}`;
-
-    return patch
-      ? http.patch<T>(endpoint, data, config)
-      : http.put<T>(endpoint, data, config);
+    return http.put<T>(endpoint, data, config);
   }
 
   delete(id: number | string) {

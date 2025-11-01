@@ -19,7 +19,7 @@ export const useAction = <T, Args extends unknown[]>(
       return res.data;
     } catch (error) {
       setError(error as AxiosError<T>);
-      return null;
+      throw error;
     } finally {
       setLoading(false);
     }

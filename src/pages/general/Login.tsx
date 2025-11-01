@@ -1,22 +1,47 @@
-import { useContext, useId, useState } from 'react';
+import { useContext } from 'react';
+import type { FormRenderProps } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { login } from '~/auth/api';
 import { AuthContext } from '~/auth/context';
+import { errorToast } from '~/components/toast';
+import { Button, InputField } from '~/components/ui';
 import { useAction } from '~/hooks/useAction';
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+const initialFormValues: LoginForm = {
+  email: '',
+  password: '',
+};
 
 export const Login = () => {
   const { setUser } = useContext(AuthContext);
-  const emailId = useId();
-  const passwordId = useId();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { error, execute } = useAction((values: LoginForm) =>
+    login(values.email, values.password),
+  );
 
-  const { loading, error, execute } = useAction(() => login(email, password));
-
-  const handleSubmit = async () => {
-    const user = await execute();
-    user && setUser(user);
+  const handleSubmit = async (values: LoginForm) => {
+    return await execute(values)
+      .then(setUser)
+      .catch(() => errorToast('Failed to login'));
   };
+
+  const formRenderer = ({
+    handleSubmit,
+    submitting,
+  }: FormRenderProps<LoginForm>) => (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <InputField label="Email" name="email" />
+      <InputField type="password" label="Password" name="password" />
+      <Button type="submit" disabled={submitting}>
+        {submitting ? 'Signing in...' : 'Sign in'}
+      </Button>
+    </form>
+  );
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-white px-4 py-8">
@@ -29,46 +54,11 @@ export const Login = () => {
           </div>
         )}
 
-        <form className="space-y-4">
-          <div>
-            <label
-              htmlFor={emailId}
-              className="mb-1 block font-medium text-gray-900 text-sm"
-            >
-              Email
-            </label>
-            <input
-              id={emailId}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor={passwordId}
-              className="mb-1 block font-medium text-gray-900 text-sm"
-            >
-              Password
-            </label>
-            <input
-              id={passwordId}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
-            />
-          </div>
-          <button
-            type="button"
-            className="w-full rounded bg-gray-900 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 disabled:opacity-50"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
+        <Form<LoginForm>
+          onSubmit={handleSubmit}
+          initialValues={initialFormValues}
+          render={formRenderer}
+        />
       </div>
     </div>
   );

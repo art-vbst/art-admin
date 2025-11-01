@@ -1,4 +1,4 @@
-import { useField } from 'react-final-form';
+import { type UseFieldConfig, useField } from 'react-final-form';
 import { cn } from '~/utils/format';
 
 type LabelProps = {
@@ -44,7 +44,14 @@ type InputFieldProps = {
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export const InputField = ({ label, name, ...props }: InputFieldProps) => {
-  const { input, meta } = useField(name);
+  const config: UseFieldConfig = {};
+
+  if (props.type === 'number') {
+    config.format = (value?: number) => value?.toString() ?? '';
+    config.parse = (value?: string) => (value ? Number(value) : undefined);
+  }
+
+  const { input, meta } = useField(name, config);
 
   return (
     <Input
@@ -160,7 +167,7 @@ export const SelectField = ({
   );
 };
 
-type ButtonVariant = 'primary' | 'secondary';
+type ButtonVariant = 'primary' | 'secondary' | 'danger';
 
 type ButtonProps = {
   variant?: ButtonVariant;
@@ -174,6 +181,7 @@ export const Button = ({
   const variantClassNames = {
     primary: 'bg-gray-900 text-white hover:bg-gray-700',
     secondary: 'border border-gray-300 text-gray-700 hover:bg-gray-100',
+    danger: 'bg-red-500 text-white hover:bg-red-600',
   };
 
   return (

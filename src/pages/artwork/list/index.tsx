@@ -1,7 +1,6 @@
 import type { Artwork } from '@art-vbst/art-types';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { Button, ErrorText } from '~/components/ui';
 import { usePageData } from '~/hooks/usePageData';
@@ -20,16 +19,6 @@ export const ArtworkList = () => {
     ArtEndpoint.list(),
   );
   const artworks = useSortedArtworks(data, filters);
-
-  const successToast = (id: string) => {
-    const jsx = (
-      <div>
-        Artwork created! <Link to={`/artworks/${id}`}>View</Link>
-      </div>
-    );
-
-    return toast.success(jsx);
-  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -67,10 +56,7 @@ export const ArtworkList = () => {
       {showCreateModal && (
         <CreateArtworkModal
           onClose={() => setShowCreateModal(false)}
-          onSuccess={(id) => {
-            refetch();
-            successToast(id);
-          }}
+          onSuccess={refetch}
         />
       )}
     </div>

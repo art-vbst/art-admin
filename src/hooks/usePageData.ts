@@ -13,10 +13,7 @@ export const usePageData = <T>(
   });
 
   const refetch = async () => {
-    const result = await execute();
-    if (result) {
-      setData(result);
-    }
+    return await execute().then(setData);
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: don't rely on memoization

@@ -20,9 +20,7 @@ export const AuthProvider = () => {
   const [user, setUser] = useState<User | null>(null);
   const { data, loading } = usePageData(me);
 
-  useEffect(() => {
-    setUser(data);
-  }, [data]);
+  useEffect(() => setUser(data), [data]);
 
   return (
     <AuthContext value={{ user: user ?? data, setUser, loading }}>
