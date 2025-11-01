@@ -48,7 +48,7 @@ export class BaseEndpoint<T> {
     this.endpoint = endpoint;
   }
 
-  create(data: Partial<T>, config: AxiosRequestConfig = {}) {
+  create(data: unknown, config: AxiosRequestConfig = {}) {
     return http.post<T>(this.endpoint, data, config);
   }
 
@@ -61,11 +61,7 @@ export class BaseEndpoint<T> {
     return http.get<T[]>(this.endpoint, { params });
   }
 
-  update(
-    id: number | string,
-    data: Partial<T>,
-    config: AxiosRequestConfig = {},
-  ) {
+  update(id: number | string, data: unknown, config: AxiosRequestConfig = {}) {
     const endpoint = `${this.endpoint}/${id}`;
     return http.put<T>(endpoint, data, config);
   }

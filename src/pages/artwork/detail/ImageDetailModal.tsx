@@ -1,6 +1,6 @@
 import type { Image } from '@art-vbst/art-types';
 import { useState } from 'react';
-import { ImageEndpoint } from '../api/images';
+import { getImageEndpoint } from '../api/images';
 
 type ImageDetailModalProps = {
   image: Image;
@@ -22,7 +22,7 @@ export const ImageDetailModal = ({
       setSubmitting(true);
       setError('');
 
-      await ImageEndpoint.update(image.id, {
+      await getImageEndpoint(image.artwork_id).update(image.id, {
         is_main_image: !image.is_main_image,
       } as Partial<Image>);
 
@@ -36,7 +36,7 @@ export const ImageDetailModal = ({
 
   const handleDelete = async () => {
     try {
-      await ImageEndpoint.delete(image.id);
+      await getImageEndpoint(image.artwork_id).delete(image.id);
       onUpdate();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to delete image');

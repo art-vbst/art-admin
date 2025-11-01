@@ -1,4 +1,4 @@
-import { type UseFieldConfig, useField } from 'react-final-form';
+import { Field, type UseFieldConfig, useField } from 'react-final-form';
 import { cn } from '~/utils/format';
 
 type LabelProps = {
@@ -38,6 +38,31 @@ export const Input = ({ label, error, className, ...props }: InputProps) => {
   );
 };
 
+export const FileInput = ({
+  name,
+  ...props
+}: InputProps & { name: string }) => {
+  return (
+    <Field name={name} {...props}>
+      {({ input, meta }) => {
+        const { value: _value, ...inputProps } = input;
+        return (
+          <Input
+            {...inputProps}
+            {...props}
+            error={meta.touched && meta.error}
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              input.onChange(file);
+            }}
+          />
+        );
+      }}
+    </Field>
+  );
+};
+
 type InputFieldProps = {
   label: string;
   name: string;
@@ -45,6 +70,10 @@ type InputFieldProps = {
 
 export const InputField = ({ label, name, ...props }: InputFieldProps) => {
   const config: UseFieldConfig = {};
+
+  if (props.type === 'file') {
+    throw new Error('File input is not supported');
+  }
 
   if (props.type === 'number') {
     config.format = (value?: number) => value?.toString() ?? '';
