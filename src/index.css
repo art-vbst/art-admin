@@ -10,5 +10,6 @@ body {
 }
 
 /* biome-ignore lint/suspicious/noUnknownAtRules: known tailwind rule */
+/* biome-ignore lint/suspicious/noEmptyBlock: intentional stub */
 @theme {
 }

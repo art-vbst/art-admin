@@ -1,18 +1,21 @@
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { usePageData } from '~/hooks/usePageData';
+import { NotFound } from '~/pages/general/NotFound';
 import { formatUSD, isUuid } from '~/utils/format';
 import { OrderEndpoint } from '../api';
 
 export const OrderDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   if (!id || !isUuid(id)) {
-    navigate('/404');
-    return null;
+    return <NotFound />;
   }
 
+  return <OrderDetailContent id={id} />;
+};
+
+const OrderDetailContent = ({ id }: { id: string }) => {
   const {
     data: order,
     loading,
@@ -33,6 +36,10 @@ export const OrderDetail = () => {
         </div>
       </div>
     );
+  }
+
+  if (error && error.response?.status !== 404) {
+    return <NotFound />;
   }
 
   if (error || !order) {
@@ -66,49 +73,52 @@ export const OrderDetail = () => {
           />
           <InfoRow
             label="Created"
-            value={new Date(order.createdAt).toLocaleString()}
+            value={new Date(order.created_at).toLocaleString()}
           />
-          {order.stripeSessionId && (
-            <InfoRow label="Stripe Session ID" value={order.stripeSessionId} />
+          {order.stripe_session_id && (
+            <InfoRow
+              label="Stripe Session ID"
+              value={order.stripe_session_id}
+            />
           )}
         </Section>
 
         <Section title="Customer & Shipping">
-          <InfoRow label="Name" value={order.shippingDetail.name} />
-          <InfoRow label="Email" value={order.shippingDetail.email} />
-          <InfoRow label="Address Line 1" value={order.shippingDetail.line1} />
-          {order.shippingDetail.line2 && (
+          <InfoRow label="Name" value={order.shipping_detail.name} />
+          <InfoRow label="Email" value={order.shipping_detail.email} />
+          <InfoRow label="Address Line 1" value={order.shipping_detail.line1} />
+          {order.shipping_detail.line2 && (
             <InfoRow
               label="Address Line 2"
-              value={order.shippingDetail.line2}
+              value={order.shipping_detail.line2}
             />
           )}
-          <InfoRow label="City" value={order.shippingDetail.city} />
-          <InfoRow label="State" value={order.shippingDetail.state} />
-          <InfoRow label="Postal Code" value={order.shippingDetail.postal} />
-          <InfoRow label="Country" value={order.shippingDetail.country} />
+          <InfoRow label="City" value={order.shipping_detail.city} />
+          <InfoRow label="State" value={order.shipping_detail.state} />
+          <InfoRow label="Postal Code" value={order.shipping_detail.postal} />
+          <InfoRow label="Country" value={order.shipping_detail.country} />
         </Section>
 
         <Section title="Payment Totals">
           <InfoRow
             label="Subtotal"
-            value={formatUSD(order.paymentRequirement.subtotalCents)}
+            value={formatUSD(order.payment_requirement.subtotal_cents)}
           />
           <InfoRow
             label="Shipping"
-            value={formatUSD(order.paymentRequirement.shippingCents)}
+            value={formatUSD(order.payment_requirement.shipping_cents)}
           />
           <InfoRow
             label="Total"
             value={
               <span className="font-bold text-lg">
-                {formatUSD(order.paymentRequirement.totalCents)}
+                {formatUSD(order.payment_requirement.total_cents)}
               </span>
             }
           />
           <InfoRow
             label="Currency"
-            value={order.paymentRequirement.currency.toUpperCase()}
+            value={order.payment_requirement.currency.toUpperCase()}
           />
         </Section>
 
@@ -124,7 +134,7 @@ export const OrderDetail = () => {
                 >
                   <div className="mb-2 flex items-center justify-between">
                     <span className="font-medium text-gray-900">
-                      {formatUSD(payment.totalCents)}
+                      {formatUSD(payment.total_cents)}
                     </span>
                     <span
                       className={`rounded px-2 py-1 font-medium text-xs ${
@@ -144,15 +154,15 @@ export const OrderDetail = () => {
                     </p>
                     <p>
                       <strong>Stripe Payment Intent:</strong>{' '}
-                      {payment.stripePaymentIntentId}
+                      {payment.stripe_payment_intent_id}
                     </p>
                     <p>
                       <strong>Created:</strong>{' '}
-                      {new Date(payment.createdAt).toLocaleString()}
+                      {new Date(payment.created_at).toLocaleString()}
                     </p>
                     <p>
                       <strong>Paid:</strong>{' '}
-                      {new Date(payment.paidAt).toLocaleString()}
+                      {new Date(payment.paid_at).toLocaleString()}
                     </p>
                     <p>
                       <strong>Currency:</strong>{' '}

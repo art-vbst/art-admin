@@ -5,21 +5,38 @@ interface ErrorBoundaryProps {
   fallback: React.ReactNode;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
-  state = { hasError: false };
+type ErrorBoundaryState = {
+  hasError: boolean;
+  error?: Error;
+  info?: React.ErrorInfo;
+};
 
-  static getDerivedStateFromError(_error: Error) {
-    return { hasError: true };
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  override state: ErrorBoundaryState = { hasError: false };
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
   }
 
-  componentDidCatch(_error: Error, _info: React.ErrorInfo) {
-    // log
+  override componentDidCatch(error: Error, info: React.ErrorInfo) {
+    this.setState({ info });
+    if (typeof window !== 'undefined') {
+      console.error('ErrorBoundary caught error:', error, info);
+    }
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
-      console.error(this.state);
-      return this.props.fallback;
+      const { fallback } = this.props;
+      if (React.isValidElement(fallback)) {
+        return React.cloneElement(fallback, {
+          error: this.state.error,
+        } as Partial<unknown>);
+      }
+      return fallback;
     }
 
     return this.props.children;

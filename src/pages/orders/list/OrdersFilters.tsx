@@ -3,22 +3,25 @@ import { SortButton } from '~/components/SortButton';
 import { type SortDirection, useSort } from '~/hooks/useSort';
 import { cn } from '~/utils/format';
 
-export type ArtSortField = 'title' | 'created_at';
+export type OrdersSortField = 'created_at' | 'status';
 
-type ArtFiltersProps = {
-  className?: string;
-  onFilterChange: (filters: ArtFilters) => void;
-};
-
-export type ArtFilters = {
+export type OrdersFilters = {
   searchTerm: string;
-  sortField?: ArtSortField;
+  sortField?: OrdersSortField;
   sortDirection?: SortDirection;
 };
 
-export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
+type OrdersFiltersProps = {
+  className?: string;
+  onFilterChange: (filters: OrdersFilters) => void;
+};
+
+export const OrdersFilters = ({
+  className,
+  onFilterChange,
+}: OrdersFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { field, direction, toggleSort } = useSort<ArtSortField>();
+  const { field, direction, toggleSort } = useSort<OrdersSortField>();
 
   useEffect(() => {
     onFilterChange({
@@ -32,19 +35,19 @@ export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
     <div className={cn('flex gap-4', className)}>
       <input
         type="text"
-        placeholder="Search by title..."
+        placeholder="Search by customer email..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm"
       />
       <div className="flex gap-2">
-        <ArtSortButton
-          field="title"
+        <OrdersSortButton
+          field="status"
           direction={direction}
           toggleSort={toggleSort}
           currentSortField={field}
         />
-        <ArtSortButton
+        <OrdersSortButton
           field="created_at"
           direction={direction}
           toggleSort={toggleSort}
@@ -55,4 +58,4 @@ export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
   );
 };
 
-const ArtSortButton = SortButton<ArtSortField>;
+const OrdersSortButton = SortButton<OrdersSortField>;

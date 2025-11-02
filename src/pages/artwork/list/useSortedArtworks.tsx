@@ -39,15 +39,8 @@ export const useSortedArtworks = (
 
   const processedArtworks = useMemo(() => {
     if (!artworks) return [];
-
     const filtered = filterArtworks(artworks, filters.searchTerm);
-    const sorted = sortArtworks(
-      filtered,
-      filters.sortField,
-      filters.sortDirection,
-    );
-
-    return sorted;
+    return sortArtworks(filtered, filters.sortField, filters.sortDirection);
   }, [artworks, filters, filterArtworks, sortArtworks]);
 
   return processedArtworks;

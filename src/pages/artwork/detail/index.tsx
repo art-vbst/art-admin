@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { usePageData } from '~/hooks/usePageData';
+import { NotFound } from '~/pages/general/NotFound';
 import { ArtEndpoint } from '../api';
 import { ArtworkForm } from './ArtworkForm';
 import { ImagesPanel } from './ImagesPanel';
@@ -14,13 +15,11 @@ type DetailParams = z.infer<typeof DetailParams>;
 
 export const ArtworkDetail = () => {
   const params = useParams<DetailParams>();
-  const navigate = useNavigate();
 
   const { success, data } = DetailParams.safeParse(params);
 
   if (!success) {
-    navigate('/404');
-    return null;
+    return <NotFound />;
   }
 
   return <ArtworkDetailContent id={data.id} />;
@@ -53,6 +52,10 @@ const ArtworkDetailContent = ({ id }: { id: string }) => {
         </div>
       </div>
     );
+  }
+
+  if (error && error.response?.status !== 404) {
+    return <NotFound />;
   }
 
   if (error || !artwork) {
