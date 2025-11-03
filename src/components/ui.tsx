@@ -28,7 +28,7 @@ export const Input = ({ label, error, className, ...props }: InputProps) => {
       <input
         {...props}
         className={cn(
-          'w-full rounded border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100',
+          'w-full rounded border border-gray-300 px-3 py-2 disabled:bg-gray-100',
           error && 'border-red-500',
           className,
         )}
