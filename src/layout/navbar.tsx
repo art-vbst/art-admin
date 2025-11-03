@@ -57,12 +57,12 @@ const NavContentDesktop = ({
 }: NavContentProps) => {
   return (
     <div className={cn('flex items-center justify-between', className)}>
-      <div className="hidden gap-8 md:flex">
+      <div className="flex gap-8">
         <NavLink to="/">Dashboard</NavLink>
         <NavLink to="/artworks">Artworks</NavLink>
         <NavLink to="/orders">Orders</NavLink>
       </div>
-      <div className="hidden items-center gap-4 md:flex">
+      <div className="flex items-center gap-4">
         {user?.email && (
           <span className="text-gray-600 text-sm">{user.email}</span>
         )}
