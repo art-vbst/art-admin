@@ -35,7 +35,7 @@ export const Login = () => {
     submitting,
   }: FormRenderProps<LoginForm>) => (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <InputField label="Email" name="email" />
+      <InputField type="email" label="Email" name="email" autoFocus />
       <InputField type="password" label="Password" name="password" />
       <Button type="submit" disabled={submitting}>
         {submitting ? 'Signing in...' : 'Sign in'}
