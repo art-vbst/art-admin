@@ -8,12 +8,14 @@ import { getImageEndpoint } from '../api/images';
 
 type ImageDetailModalProps = {
   image: Image;
+  isOpen: boolean;
   onClose: () => void;
   onUpdate: () => void;
 };
 
 export const ImageDetailModal = ({
   image,
+  isOpen,
   onClose,
   onUpdate,
 }: ImageDetailModalProps) => {
@@ -57,7 +59,7 @@ export const ImageDetailModal = ({
   };
 
   return (
-    <Modal onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <h3 className="mb-4 font-bold text-gray-900 text-lg">Image Details</h3>
 
       {error && (
@@ -108,16 +110,14 @@ export const ImageDetailModal = ({
         </div>
       </div>
 
-      {showDeleteConfirm && (
-        <ConfirmModal
-          danger
-          title="Delete Image?"
-          description="Are you sure you want to delete this image? This action cannot be undone."
-          open={showDeleteConfirm}
-          onClose={() => setShowDeleteConfirm(false)}
-          onConfirm={handleDelete}
-        />
-      )}
+      <ConfirmModal
+        danger
+        title="Delete Image?"
+        description="Are you sure you want to delete this image? This action cannot be undone."
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+      />
     </Modal>
   );
 };

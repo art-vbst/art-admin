@@ -53,12 +53,11 @@ export const ArtworkList = () => {
         onTableRowClick={(artwork) => navigate(`/artworks/${artwork.id}`)}
       />
 
-      {showCreateModal && (
-        <CreateArtworkModal
-          onClose={() => setShowCreateModal(false)}
-          onSuccess={refetch}
-        />
-      )}
+      <CreateArtworkModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={refetch}
+      />
     </div>
   );
 };

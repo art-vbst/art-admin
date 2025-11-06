@@ -17,6 +17,7 @@ import { useAction } from '~/hooks/useAction';
 import { ArtEndpoint } from '../api';
 
 type CreateArtworkModalProps = {
+  isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 };
@@ -35,6 +36,7 @@ const initialFormValues: Partial<Artwork> = {
 };
 
 export const CreateArtworkModal = ({
+  isOpen,
   onClose,
   onSuccess,
 }: CreateArtworkModalProps) => {
@@ -119,7 +121,7 @@ export const CreateArtworkModal = ({
   );
 
   return (
-    <Modal onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <Form<Partial<Artwork>>
         onSubmit={handleSubmit}
         initialValues={initialFormValues}

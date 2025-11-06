@@ -25,19 +25,19 @@ export const ImagesPanel = ({ artwork, onUpdate }: ImagesPanelProps) => {
         onImageClick={setSelectedImage}
       />
 
-      {showAddModal && (
-        <AddImageModal
-          artworkId={artwork.id}
-          onClose={() => setShowAddModal(false)}
-          onSuccess={() => {
-            setShowAddModal(false);
-            onUpdate();
-          }}
-        />
-      )}
+      <AddImageModal
+        artworkId={artwork.id}
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          setShowAddModal(false);
+          onUpdate();
+        }}
+      />
 
       {selectedImage && (
         <ImageDetailModal
+          isOpen
           image={selectedImage}
           onClose={() => setSelectedImage(null)}
           onUpdate={() => {

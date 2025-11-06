@@ -31,12 +31,8 @@ export const ConfirmModal = ({
     handleClose();
   };
 
-  if (!open) {
-    return null;
-  }
-
   return (
-    <Modal onClose={handleClose}>
+    <Modal isOpen={open} onClose={handleClose}>
       <h3 className="mb-4 font-bold text-gray-900 text-lg">{title}</h3>
       <p className="mb-6 text-gray-600 text-sm">{description}</p>
       <div className="flex justify-end gap-3">

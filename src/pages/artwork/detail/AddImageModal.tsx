@@ -1,11 +1,12 @@
 import { Form, type FormRenderProps } from 'react-final-form';
 import { errorToast } from '~/components/toast';
-import { Button, CheckboxField, FileInput } from '~/components/ui';
+import { Button, CheckboxField, FileInput, Modal } from '~/components/ui';
 import { useAction } from '~/hooks/useAction';
 import { getImageEndpoint } from '../api/images';
 
 type AddImageModalProps = {
   artworkId: string;
+  isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 };
@@ -22,6 +23,7 @@ const initialFormValues: ImageForm = {
 
 export const AddImageModal = ({
   artworkId,
+  isOpen,
   onClose,
   onSuccess,
 }: AddImageModalProps) => {
@@ -73,22 +75,20 @@ export const AddImageModal = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="max-w-md rounded-lg bg-white p-6">
-        <h3 className="mb-4 font-bold text-gray-900 text-lg">Add Image</h3>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h3 className="mb-4 font-bold text-gray-900 text-lg">Add Image</h3>
 
-        {error && (
-          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
-            {error?.message}
-          </div>
-        )}
+      {error && (
+        <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
+          {error?.message}
+        </div>
+      )}
 
-        <Form<ImageForm>
-          onSubmit={handleSubmit}
-          initialValues={initialFormValues}
-          render={formRenderer}
-        />
-      </div>
-    </div>
+      <Form<ImageForm>
+        onSubmit={handleSubmit}
+        initialValues={initialFormValues}
+        render={formRenderer}
+      />
+    </Modal>
   );
 };

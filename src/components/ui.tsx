@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Field, type UseFieldConfig, useField } from 'react-final-form';
 import { cn } from '~/utils/format';
 
@@ -40,26 +41,79 @@ export const Input = ({ label, error, className, ...props }: InputProps) => {
 
 export const FileInput = ({
   name,
+  label,
   ...props
 }: InputProps & { name: string }) => {
   return (
     <Field name={name} {...props}>
       {({ input, meta }) => {
-        const { value: _value, ...inputProps } = input;
+        const { value, onChange, ...inputProps } = input;
         return (
-          <Input
-            {...inputProps}
-            {...props}
+          <FileInputInner
+            value={value}
+            onFileChange={onChange}
+            label={label}
             error={meta.touched && meta.error}
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files?.[0] ?? null;
-              input.onChange(file);
-            }}
+            inputProps={inputProps}
+            {...props}
           />
         );
       }}
     </Field>
+  );
+};
+
+const FileInputInner = ({
+  value,
+  onFileChange,
+  label,
+  error,
+  inputProps,
+  ...props
+}: {
+  value: File | null;
+  onFileChange: (file: File | null) => void;
+  label: string;
+  error?: string;
+  inputProps: Record<string, unknown>;
+} & Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'onChange' | 'value'
+>) => {
+  const fileName = value?.name || 'No file chosen';
+  const hasFile = !!value;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  return (
+    <div>
+      <Label label={label} />
+      <div className="flex items-center gap-3">
+        <Button variant="secondary" onClick={handleButtonClick} type="button">
+          Choose File
+        </Button>
+        <input
+          {...inputProps}
+          {...props}
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0] ?? null;
+            onFileChange(file);
+          }}
+        />
+        <span
+          className={cn('text-sm', hasFile ? 'text-gray-900' : 'text-gray-500')}
+        >
+          {fileName}
+        </span>
+      </div>
+      {error && <ErrorText message={error} />}
+    </div>
   );
 };
 
@@ -315,17 +369,22 @@ export const ErrorText = ({
 
 type ModalProps = {
   children: React.ReactNode;
+  isOpen: boolean;
   onClose?: () => void;
 };
 
-export const Modal = ({ children, onClose }: ModalProps) => {
+export const Modal = ({ children, isOpen, onClose }: ModalProps) => {
+  if (!isOpen) {
+    return null;
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={onClose}
     >
       <div
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6"
+        className="max-h-[90vh] min-w-sm max-w-xl overflow-y-auto rounded-lg bg-white p-6"
         onClick={(e) => e.stopPropagation()}
       >
         {children}
