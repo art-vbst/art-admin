@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { useParams } from 'react-router';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
+import { Button } from '~/components/ui';
 import { usePageData } from '~/hooks/usePageData';
 import { NotFound } from '~/pages/general/NotFound';
 import { formatUSD, isUuid } from '~/utils/format';
 import { OrderEndpoint } from '../api';
+import { OrderActionModal } from './OrderActionModal';
 
 export const OrderDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,7 +23,12 @@ const OrderDetailContent = ({ id }: { id: string }) => {
     data: order,
     loading,
     error,
+    refetch,
   } = usePageData(() => OrderEndpoint.get(id), [id]);
+
+  const [shippedModalOpen, setShippedModalOpen] = useState(false);
+  const [deliveredModalOpen, setDeliveredModalOpen] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -52,6 +60,39 @@ const OrderDetailContent = ({ id }: { id: string }) => {
     );
   }
 
+  const showMarkAsShipped =
+    order.status === 'pending' || order.status === 'processing';
+  const showMarkAsDelivered = order.status === 'shipped';
+
+  const handleMarkAsShipped = async (trackingLink?: string) => {
+    setActionError(null);
+    try {
+      const updateData = trackingLink
+        ? { status: 'shipped', tracking_link: trackingLink }
+        : { status: 'shipped' };
+      await OrderEndpoint.update(id, updateData);
+      await refetch();
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to update order status';
+      setActionError(errorMessage);
+      throw err;
+    }
+  };
+
+  const handleMarkAsDelivered = async () => {
+    setActionError(null);
+    try {
+      await OrderEndpoint.update(id, { status: 'completed' });
+      await refetch();
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to update order status';
+      setActionError(errorMessage);
+      throw err;
+    }
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumbs
@@ -82,6 +123,30 @@ const OrderDetailContent = ({ id }: { id: string }) => {
             />
           )}
         </Section>
+
+        {(showMarkAsShipped || showMarkAsDelivered) && (
+          <div className="rounded-lg border border-gray-200 bg-white p-6">
+            <h2 className="mb-4 font-bold text-gray-900 text-xl">Actions</h2>
+            <div className="flex gap-3">
+              {showMarkAsShipped && (
+                <Button
+                  variant="primary"
+                  onClick={() => setShippedModalOpen(true)}
+                >
+                  Mark as Shipped
+                </Button>
+              )}
+              {showMarkAsDelivered && (
+                <Button
+                  variant="primary"
+                  onClick={() => setDeliveredModalOpen(true)}
+                >
+                  Mark as Delivered
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
 
         <Section title="Customer & Shipping">
           <InfoRow label="Name" value={order.shipping_detail.name} />
@@ -175,6 +240,31 @@ const OrderDetailContent = ({ id }: { id: string }) => {
           )}
         </Section>
       </div>
+
+      <OrderActionModal
+        title="Mark Order as Shipped"
+        description="This will update the order status to 'shipped'. Optionally provide a tracking link that will be emailed to the customer."
+        open={shippedModalOpen}
+        onConfirm={handleMarkAsShipped}
+        onClose={() => {
+          setShippedModalOpen(false);
+          setActionError(null);
+        }}
+        showTrackingInput
+        error={actionError}
+      />
+
+      <OrderActionModal
+        title="Mark Order as Delivered"
+        description="This will mark the order as completed. This action confirms the customer has received their order."
+        open={deliveredModalOpen}
+        onConfirm={handleMarkAsDelivered}
+        onClose={() => {
+          setDeliveredModalOpen(false);
+          setActionError(null);
+        }}
+        error={actionError}
+      />
     </div>
   );
 };

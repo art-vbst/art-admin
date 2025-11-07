@@ -9,32 +9,43 @@ export const Dashboard = () => {
   const { data: orders, loading: ordersLoading } = usePageData(() =>
     OrderEndpoint.list(),
   );
+  const { data: activeOrders, loading: activeOrdersLoading } = usePageData(() =>
+    OrderEndpoint.list({ status: 'processing' }),
+  );
   const { data: artworks, loading: artworksLoading } = usePageData(() =>
     ArtEndpoint.list(),
   );
 
-  const loading = ordersLoading || artworksLoading;
+  const loading = ordersLoading || activeOrdersLoading || artworksLoading;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ label: 'dashboard' }]} />
       <h1 className="mb-8 font-bold text-3xl text-gray-900">Dashboard</h1>
-      <DashboardContent orders={orders} artworks={artworks} loading={loading} />
+      <DashboardContent
+        orders={orders}
+        activeOrders={activeOrders}
+        artworks={artworks}
+        loading={loading}
+      />
     </div>
   );
 };
 
 const DashboardContent = ({
   orders,
+  activeOrders,
   artworks,
   loading,
 }: {
   orders: Order[] | null;
+  activeOrders: Order[] | null;
   artworks: Artwork[] | null;
   loading: boolean;
 }) => {
   const skeleton = (
     <>
+      <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
       <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
       <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
     </>
@@ -47,6 +58,12 @@ const DashboardContent = ({
         value={orders?.length ?? 0}
         link="/orders"
         linkText="View Orders"
+      />
+      <DashboardCard
+        title="Active Orders"
+        value={activeOrders?.length ?? 0}
+        link="/orders/active"
+        linkText="View Active Orders"
       />
       <DashboardCard
         title="Total Artworks"

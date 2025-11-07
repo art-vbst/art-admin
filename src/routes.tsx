@@ -8,6 +8,7 @@ import { Dashboard } from './pages/dashboard/Dashboard';
 import { ErrorDisplay } from './pages/general/Error';
 import { Login } from './pages/general/Login';
 import { NotFound } from './pages/general/NotFound';
+import { ActiveOrdersList } from './pages/orders/active';
 import { OrderDetail } from './pages/orders/detail';
 import { OrderList } from './pages/orders/list';
 
@@ -26,6 +27,7 @@ const privateRoutes: RouteObject[] = [
       { path: '/artworks', element: <ArtworkList /> },
       { path: '/artworks/:id', element: <ArtworkDetail /> },
       { path: '/orders', element: <OrderList /> },
+      { path: '/orders/active', element: <ActiveOrdersList /> },
       { path: '/orders/:id', element: <OrderDetail /> },
     ],
   },
