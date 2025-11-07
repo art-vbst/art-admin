@@ -43,39 +43,89 @@ const DashboardContent = ({
   artworks: Artwork[] | null;
   loading: boolean;
 }) => {
-  const skeleton = (
-    <>
-      <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
-      <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
-      <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
-    </>
-  );
+  const activeOrderCount = activeOrders?.length ?? 0;
+  const hasActiveOrders = activeOrderCount > 0;
 
-  const content = (
-    <>
-      <DashboardCard
-        title="Total Orders"
-        value={orders?.length ?? 0}
-        link="/orders"
-        linkText="View Orders"
-      />
-      <DashboardCard
-        title="Active Orders"
-        value={activeOrders?.length ?? 0}
-        link="/orders/active"
-        linkText="View Active Orders"
-      />
-      <DashboardCard
-        title="Total Artworks"
-        value={artworks?.length ?? 0}
-        link="/artworks"
-        linkText="View Artworks"
-      />
-    </>
-  );
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div className="h-16 animate-pulse rounded-lg bg-gray-200" />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
+          <div className="h-32 animate-pulse rounded-lg bg-gray-200" />
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-2 gap-6">{loading ? skeleton : content}</div>
+    <div className="space-y-8">
+      {/* Active Orders Section */}
+      {hasActiveOrders ? (
+        <div className="rounded-lg border border-blue-400 bg-blue-50/50 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="mb-2 font-semibold text-gray-700 text-base">
+                Active Orders
+              </h2>
+              <p className="font-bold text-4xl text-blue-600">
+                {activeOrderCount}
+              </p>
+              <p className="mt-2 text-gray-600 text-sm">
+                {activeOrderCount === 1
+                  ? '1 order needs attention'
+                  : `${activeOrderCount} orders need attention`}
+              </p>
+            </div>
+            <Link
+              to="/orders/active"
+              className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-sm text-white transition-colors hover:bg-blue-700"
+            >
+              View Active Orders →
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
+          <div className="flex items-center gap-3">
+            <div className="rounded-full bg-green-100 p-2">
+              <svg
+                className="h-5 w-5 text-green-600"
+                fill="none"
+                strokeWidth="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <p className="text-gray-600 text-sm">
+              No active orders at the moment
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-6">
+        <DashboardCard
+          title="Total Orders"
+          value={orders?.length ?? 0}
+          link="/orders"
+          linkText="View Orders"
+        />
+        <DashboardCard
+          title="Total Artworks"
+          value={artworks?.length ?? 0}
+          link="/artworks"
+          linkText="View Artworks"
+        />
+      </div>
+    </div>
   );
 };
 
