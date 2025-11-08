@@ -6,7 +6,7 @@ export function me() {
 }
 
 export function refresh() {
-  return http.get<User>('/auth/refresh');
+  return http.post<User>('/auth/refresh');
 }
 
 export function login(email: string, password: string) {
