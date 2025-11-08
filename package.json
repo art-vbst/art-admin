@@ -11,9 +11,9 @@
     "format": "biome format --write .",
     "format:unsafe": "biome lint --write --unsafe .",
     "update:types": "npm i -D @art-vbst/art-types@latest",
-    "release:patch": "npm version patch -m 'chore(release): %s'",
-    "release:minor": "npm version minor -m 'chore(release): %s'",
-    "release:major": "npm version major -m 'chore(release): %s'"
+    "release:patch": "npm version patch -m 'chore(release): patch %s'",
+    "release:minor": "npm version minor -m 'chore(release): minor %s'",
+    "release:major": "npm version major -m 'chore(release): major %s'"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.15",
