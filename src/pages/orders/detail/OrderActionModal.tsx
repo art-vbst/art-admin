@@ -34,7 +34,7 @@ export const OrderActionModal = ({
     try {
       await onConfirm(showTrackingInput ? trackingLink : undefined);
       handleClose();
-    } catch (err) {
+    } catch (_err) {
       setDisabled(false);
     }
   };

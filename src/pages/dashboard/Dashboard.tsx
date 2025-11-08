@@ -65,7 +65,7 @@ const DashboardContent = ({
         <div className="rounded-lg border border-blue-400 bg-blue-50/50 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="mb-2 font-semibold text-gray-700 text-base">
+              <h2 className="mb-2 font-semibold text-base text-gray-700">
                 Active Orders
               </h2>
               <p className="font-bold text-4xl text-blue-600">
