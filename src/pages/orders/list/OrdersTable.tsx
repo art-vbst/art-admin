@@ -28,24 +28,24 @@ export const OrdersTable = ({ orders, onRowClick }: OrdersTableProps) => {
     },
     {
       header: 'Customer Name',
-      cell: (order) => ({ children: order.shipping_detail.name }),
+      cell: (order) => ({ children: order.shipping_detail?.name }),
     },
     {
       header: 'Email',
       cell: (order) => ({
-        children: order.shipping_detail.email,
+        children: order.shipping_detail?.email,
         className: 'text-gray-600',
       }),
     },
     {
       header: 'Total',
       cell: (order) => ({
-        children: formatUSD(order.payment_requirement.total_cents),
+        children: formatUSD(order.payment_requirement?.total_cents),
       }),
     },
     {
       header: 'Payments',
-      cell: (order) => ({ children: order.payments.length }),
+      cell: (order) => ({ children: order.payments?.length ?? 0 }),
     },
     {
       header: 'Created',

@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const formatUSD = (cents: number): string => {
-  const dollars = cents / 100;
+export const formatUSD = (cents: number | undefined): string => {
+  const dollars = cents ? cents / 100 : 0;
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',

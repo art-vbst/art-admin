@@ -10,8 +10,9 @@ export const useSortedOrders = (
   const filterOrders = useCallback((orders: Order[], searchTerm: string) => {
     if (!searchTerm.trim()) return orders;
     const term = searchTerm.toLowerCase();
-    return orders.filter((order) =>
-      order.shipping_detail.email.toLowerCase().includes(term),
+    return orders.filter(
+      (order) =>
+        order.shipping_detail?.email?.toLowerCase().includes(term) ?? false,
     );
   }, []);
 

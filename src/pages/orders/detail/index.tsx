@@ -149,50 +149,53 @@ const OrderDetailContent = ({ id }: { id: string }) => {
         )}
 
         <Section title="Customer & Shipping">
-          <InfoRow label="Name" value={order.shipping_detail.name} />
-          <InfoRow label="Email" value={order.shipping_detail.email} />
-          <InfoRow label="Address Line 1" value={order.shipping_detail.line1} />
-          {order.shipping_detail.line2 && (
+          <InfoRow label="Name" value={order.shipping_detail?.name} />
+          <InfoRow label="Email" value={order.shipping_detail?.email} />
+          <InfoRow
+            label="Address Line 1"
+            value={order.shipping_detail?.line1}
+          />
+          {order.shipping_detail?.line2 && (
             <InfoRow
               label="Address Line 2"
-              value={order.shipping_detail.line2}
+              value={order.shipping_detail?.line2}
             />
           )}
-          <InfoRow label="City" value={order.shipping_detail.city} />
-          <InfoRow label="State" value={order.shipping_detail.state} />
-          <InfoRow label="Postal Code" value={order.shipping_detail.postal} />
-          <InfoRow label="Country" value={order.shipping_detail.country} />
+          <InfoRow label="City" value={order.shipping_detail?.city} />
+          <InfoRow label="State" value={order.shipping_detail?.state} />
+          <InfoRow label="Postal Code" value={order.shipping_detail?.postal} />
+          <InfoRow label="Country" value={order.shipping_detail?.country} />
         </Section>
 
         <Section title="Payment Totals">
           <InfoRow
             label="Subtotal"
-            value={formatUSD(order.payment_requirement.subtotal_cents)}
+            value={formatUSD(order.payment_requirement?.subtotal_cents)}
           />
           <InfoRow
             label="Shipping"
-            value={formatUSD(order.payment_requirement.shipping_cents)}
+            value={formatUSD(order.payment_requirement?.shipping_cents)}
           />
           <InfoRow
             label="Total"
             value={
               <span className="font-bold text-lg">
-                {formatUSD(order.payment_requirement.total_cents)}
+                {formatUSD(order.payment_requirement?.total_cents)}
               </span>
             }
           />
           <InfoRow
             label="Currency"
-            value={order.payment_requirement.currency.toUpperCase()}
+            value={order.payment_requirement?.currency.toUpperCase()}
           />
         </Section>
 
         <Section title="Payments">
-          {order.payments.length === 0 ? (
+          {order.payments?.length === 0 ? (
             <p className="text-gray-600 text-sm">No payments recorded</p>
           ) : (
             <div className="space-y-4">
-              {order.payments.map((payment) => (
+              {order.payments?.map((payment) => (
                 <div
                   key={payment.id}
                   className="rounded border border-gray-200 bg-gray-50 p-4"
@@ -227,7 +230,7 @@ const OrderDetailContent = ({ id }: { id: string }) => {
                     </p>
                     <p>
                       <strong>Paid:</strong>{' '}
-                      {new Date(payment.paid_at).toLocaleString()}
+                      {new Date(payment.paid_at ?? '').toLocaleString()}
                     </p>
                     <p>
                       <strong>Currency:</strong>{' '}

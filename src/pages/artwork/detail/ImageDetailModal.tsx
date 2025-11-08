@@ -26,14 +26,16 @@ export const ImageDetailModal = ({
     error: updateError,
     loading: updateLoading,
   } = useAction((values: { is_main_image: string }) =>
-    getImageEndpoint(image.artwork_id).update(image.id, values),
+    getImageEndpoint(image.artwork_id ?? '').update(image.id, values),
   );
 
   const {
     execute: deleteImage,
     error: deleteError,
     loading: deleteLoading,
-  } = useAction(() => getImageEndpoint(image.artwork_id).delete(image.id));
+  } = useAction(() =>
+    getImageEndpoint(image.artwork_id ?? '').delete(image.id),
+  );
 
   const error = updateError || deleteError;
   const loading = updateLoading || deleteLoading;
