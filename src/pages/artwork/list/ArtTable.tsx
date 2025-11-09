@@ -11,6 +11,26 @@ export const ArtTable = ({
 }) => {
   const { headers, render } = processColumns<Artwork>([
     {
+      header: '',
+      cell: (artwork) => {
+        const firstImage = artwork.images?.[0];
+        return {
+          children: (
+            <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
+              {firstImage ? (
+                <img
+                  src={firstImage.image_url}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              ) : null}
+            </div>
+          ),
+          className: 'w-12',
+        };
+      },
+    },
+    {
       header: 'Title',
       cell: (artwork) => ({
         children: artwork.title,

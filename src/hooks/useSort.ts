@@ -15,5 +15,10 @@ export const useSort = <T extends string>() => {
     }
   };
 
-  return { field, direction, toggleSort };
+  const clearSort = () => {
+    setField(undefined);
+    setDirection(undefined);
+  };
+
+  return { field, direction, toggleSort, clearSort };
 };

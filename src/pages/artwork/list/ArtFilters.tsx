@@ -1,9 +1,10 @@
+import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SortButton } from '~/components/SortButton';
+import { Button } from '~/components/ui';
 import { type SortDirection, useSort } from '~/hooks/useSort';
 import { cn } from '~/utils/format';
-
-export type ArtSortField = 'title' | 'created_at';
+import type { ArtSortField } from './useSortedArtworks';
 
 type ArtFiltersProps = {
   className?: string;
@@ -18,7 +19,7 @@ export type ArtFilters = {
 
 export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { field, direction, toggleSort } = useSort<ArtSortField>();
+  const { field, direction, toggleSort, clearSort } = useSort<ArtSortField>();
 
   useEffect(() => {
     onFilterChange({
@@ -37,9 +38,15 @@ export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm"
       />
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         <ArtSortButton
           field="title"
+          direction={direction}
+          toggleSort={toggleSort}
+          currentSortField={field}
+        />
+        <ArtSortButton
+          field="status"
           direction={direction}
           toggleSort={toggleSort}
           currentSortField={field}
@@ -50,6 +57,15 @@ export const ArtFilters = ({ className, onFilterChange }: ArtFiltersProps) => {
           toggleSort={toggleSort}
           currentSortField={field}
         />
+        {field && (
+          <Button
+            variant="secondary"
+            onClick={clearSort}
+            className="flex h-[38px] items-center justify-center px-3"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
       </div>
     </div>
   );

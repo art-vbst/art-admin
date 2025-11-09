@@ -1,7 +1,9 @@
 import type { Artwork } from '@art-vbst/art-types';
 import { useCallback, useMemo } from 'react';
 import type { SortDirection } from '~/hooks/useSort';
-import type { ArtFilters, ArtSortField } from './ArtFilters';
+import type { ArtFilters } from './ArtFilters';
+
+export type ArtSortField = 'title' | 'created_at' | 'status';
 
 export const useSortedArtworks = (
   artworks: Artwork[] | null,
@@ -18,10 +20,38 @@ export const useSortedArtworks = (
 
   const sortArtworks = useCallback(
     (artworks: Artwork[], field?: ArtSortField, direction?: SortDirection) => {
+      if (!field || !direction) {
+        // When no sort is applied, prioritize artworks with images
+        return artworks.sort((a, b) => {
+          const aHasImages = (a.images?.length ?? 0) > 0;
+          const bHasImages = (b.images?.length ?? 0) > 0;
+          if (aHasImages && !bHasImages) return -1;
+          if (!aHasImages && bHasImages) return 1;
+          return 0;
+        });
+      }
+
       switch (field) {
         case 'title':
           return artworks.sort((a, b) => {
-            const comparison = a.title.localeCompare(b.title);
+            const aTitle = a.title.trim();
+            const bTitle = b.title.trim();
+
+            const aIsEmptyOrNumber = !aTitle || /^\d/.test(aTitle);
+            const bIsEmptyOrNumber = !bTitle || /^\d/.test(bTitle);
+
+            if (aIsEmptyOrNumber && !bIsEmptyOrNumber) return 1;
+            if (!aIsEmptyOrNumber && bIsEmptyOrNumber) return -1;
+            if (aIsEmptyOrNumber && bIsEmptyOrNumber) {
+              return aTitle.localeCompare(bTitle);
+            }
+
+            const comparison = aTitle.localeCompare(bTitle);
+            return direction === 'asc' ? comparison : -comparison;
+          });
+        case 'status':
+          return artworks.sort((a, b) => {
+            const comparison = a.status.localeCompare(b.status);
             return direction === 'asc' ? comparison : -comparison;
           });
         case 'created_at':
