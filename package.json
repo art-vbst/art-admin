@@ -31,7 +31,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@art-vbst/art-types": "^2.0.0",
+    "@art-vbst/art-types": "^2.0.1",
     "@biomejs/biome": "2.2.7",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",

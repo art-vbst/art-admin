@@ -8,6 +8,7 @@ import {
   CheckboxField,
   InputField,
   SelectField,
+  TextareaField,
 } from '~/components/ui';
 import { useAction } from '~/hooks/useAction';
 import { ArtEndpoint } from '../api';
@@ -61,6 +62,7 @@ export const ArtworkForm = ({
   }: FormRenderProps<Partial<Artwork>>) => (
     <form onSubmit={handleSubmit} className="space-y-4">
       <InputField label="Title" name="title" />
+      <TextareaField label="Description" name="description" rows={4} />
       <div className="grid grid-cols-2 gap-4">
         <InputField
           type="number"
@@ -97,10 +99,14 @@ export const ArtworkForm = ({
         label="Medium"
         name="medium"
         options={[
-          { label: 'Oil Panel', value: 'oil_panel' },
-          { label: 'Acrylic Panel', value: 'acrylic_panel' },
-          { label: 'Oil MDF', value: 'oil_mdf' },
-          { label: 'Oil Paper', value: 'oil_paper' },
+          { label: 'Oil on Panel', value: 'oil_on_panel' },
+          { label: 'Acrylic on Panel', value: 'acrylic_on_panel' },
+          { label: 'Oil on MDF', value: 'oil_on_mdf' },
+          { label: 'Oil on Oil Paper', value: 'oil_on_oil_paper' },
+          { label: 'Clay Sculpture', value: 'clay_sculpture' },
+          { label: 'Plaster Sculpture', value: 'plaster_sculpture' },
+          { label: 'Ink on Paper', value: 'ink_on_paper' },
+          { label: 'Mixed Media on Paper', value: 'mixed_media_on_paper' },
           { label: 'Unknown', value: 'unknown' },
         ]}
       />

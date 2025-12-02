@@ -1,5 +1,5 @@
-import { Navigate, useNavigate } from "react-router";
-import { Button } from "~/components/ui";
+import { Navigate, useNavigate } from 'react-router';
+import { Button } from '~/components/ui';
 
 export const TwoFactorAuthSetup = ({ qrCode }: { qrCode: string }) => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ export const TwoFactorAuthSetup = ({ qrCode }: { qrCode: string }) => {
           </div>
 
           <Button
-            onClick={() => navigate("/2fa")}
+            onClick={() => navigate('/2fa')}
             className="w-full py-3 font-semibold text-base transition-all duration-200"
           >
             Ready to Verify

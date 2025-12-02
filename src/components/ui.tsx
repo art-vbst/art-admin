@@ -146,6 +146,55 @@ export const InputField = ({ label, name, ...props }: InputFieldProps) => {
   );
 };
 
+type TextareaProps = {
+  label: string;
+  error?: string;
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+export const Textarea = ({
+  label,
+  error,
+  className,
+  ...props
+}: TextareaProps) => {
+  return (
+    <div>
+      <Label label={label} />
+      <textarea
+        {...props}
+        className={cn(
+          'w-full rounded border border-gray-300 px-3 py-2 disabled:bg-gray-100',
+          error && 'border-red-500',
+          className,
+        )}
+      />
+      {error && <ErrorText message={error} />}
+    </div>
+  );
+};
+
+type TextareaFieldProps = {
+  label: string;
+  name: string;
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+export const TextareaField = ({
+  label,
+  name,
+  ...props
+}: TextareaFieldProps) => {
+  const { input, meta } = useField(name);
+
+  return (
+    <Textarea
+      {...input}
+      {...props}
+      label={label}
+      error={meta.touched && meta.error}
+    />
+  );
+};
+
 type CheckboxProps = {
   label: string;
   error?: string;

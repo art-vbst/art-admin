@@ -12,6 +12,7 @@ import {
   InputField,
   Modal,
   SelectField,
+  TextareaField,
 } from '~/components/ui';
 import { useAction } from '~/hooks/useAction';
 import { ArtEndpoint } from '../api';
@@ -24,6 +25,7 @@ type CreateArtworkModalProps = {
 
 const initialFormValues: Partial<Artwork> = {
   title: '',
+  description: 'Unframed original painting.',
   painting_number: null,
   painting_year: null,
   width_inches: 0,
@@ -31,7 +33,7 @@ const initialFormValues: Partial<Artwork> = {
   price_cents: 0,
   paper: false,
   status: ArtworkStatus.Available,
-  medium: ArtworkMedium.OilPanel,
+  medium: ArtworkMedium.OilOnPanel,
   category: ArtworkCategory.Figure,
 };
 
@@ -64,6 +66,7 @@ export const CreateArtworkModal = ({
   }: FormRenderProps<Partial<Artwork>>) => (
     <form onSubmit={handleSubmit} className="space-y-4">
       <InputField label="Title" name="title" />
+      <TextareaField label="Description" name="description" rows={4} />
       <div className="grid grid-cols-2 gap-4">
         <InputField type="number" label="Width" name="width_inches" />
         <InputField type="number" label="Height" name="height_inches" />

@@ -1,19 +1,19 @@
-import { useContext } from "react";
-import type { FormRenderProps } from "react-final-form";
-import { Form } from "react-final-form";
-import { useNavigate } from "react-router";
-import { verify } from "~/auth/api";
-import { AuthContext } from "~/auth/context";
-import { errorToast } from "~/components/toast";
-import { Button, InputField } from "~/components/ui";
-import { useAction } from "~/hooks/useAction";
+import { useContext } from 'react';
+import type { FormRenderProps } from 'react-final-form';
+import { Form } from 'react-final-form';
+import { useNavigate } from 'react-router';
+import { verify } from '~/auth/api';
+import { AuthContext } from '~/auth/context';
+import { errorToast } from '~/components/toast';
+import { Button, InputField } from '~/components/ui';
+import { useAction } from '~/hooks/useAction';
 
 type LoginForm = {
   totp: string;
 };
 
 const initialFormValues: LoginForm = {
-  totp: "",
+  totp: '',
 };
 
 export const TwoFactorAuthForm = () => {
@@ -21,7 +21,7 @@ export const TwoFactorAuthForm = () => {
   const { setUser } = useContext(AuthContext);
 
   const { error, execute } = useAction((values: LoginForm) =>
-    verify(values.totp)
+    verify(values.totp),
   );
 
   const handleSubmit = async (values: LoginForm) => {
@@ -29,9 +29,9 @@ export const TwoFactorAuthForm = () => {
       .then(setUser)
       .catch((res) => {
         if (res.response?.status === 401) {
-          navigate("/login");
+          navigate('/login');
         } else {
-          errorToast("Failed to verify");
+          errorToast('Failed to verify');
         }
       });
   };
@@ -55,7 +55,7 @@ export const TwoFactorAuthForm = () => {
         disabled={submitting}
         className="w-full py-3 font-semibold text-base transition-all duration-200"
       >
-        {submitting ? "Verifying..." : "Verify Code"}
+        {submitting ? 'Verifying...' : 'Verify Code'}
       </Button>
     </form>
   );
